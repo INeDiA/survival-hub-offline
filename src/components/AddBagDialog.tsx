@@ -35,6 +35,7 @@ export function AddBagDialog() {
         setName("");
         setDescription("");
         setWeightLimit("15");
+        setBagWeight("0");
       },
     });
   };

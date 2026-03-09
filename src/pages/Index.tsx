@@ -126,6 +126,34 @@ const Index = () => {
           </div>
         )}
       </main>
+
+      {showInstall && (
+        <div className="fixed bottom-0 inset-x-0 z-50 p-4 safe-area-bottom">
+          <div className="container max-w-lg mx-auto rounded-xl border bg-card shadow-lg p-4">
+            <div className="flex items-start gap-3">
+              {isIos ? (
+                <Share className="h-5 w-5 mt-0.5 shrink-0 text-primary" />
+              ) : (
+                <Download className="h-5 w-5 mt-0.5 shrink-0 text-primary" />
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm text-foreground">{t.installApp}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {isIos ? t.iosInstallGuide : t.installDesc}
+                </p>
+              </div>
+              <button onClick={dismissInstall} className="shrink-0 p-1 rounded hover:bg-muted">
+                <X className="h-4 w-4 text-muted-foreground" />
+              </button>
+            </div>
+            {!isIos && (
+              <Button onClick={install} size="sm" className="w-full mt-3 gap-2">
+                <Download className="h-4 w-4" /> {t.installButton}
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

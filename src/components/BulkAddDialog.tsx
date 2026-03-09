@@ -1,0 +1,69 @@
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useSaveItem } from "@/hooks/use-items";
+import type { Item } from "@/lib/types";
+
+interface BulkAddDialogProps {
+  bagId: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function BulkAddDialog({ bagId, open, onOpenChange }: BulkAddDialogProps) {
+  const [text, setText] = useState("");
+  const saveItem = useSaveItem();
+
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+
+  const handleSubmit = () => {
+    if (lines.length === 0) return;
+    for (const name of lines) {
+      const item: Item = {
+        id: crypto.randomUUID(),
+        bagId,
+        name,
+        category: "other",
+        weight: 0,
+        quantity: 1,
+        expiryDate: null,
+        checked: false,
+        notes: "",
+      };
+      saveItem.mutate(item);
+    }
+    setText("");
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Importa Lista</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div>
+            <Label>Un oggetto per riga</Label>
+            <Textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder={"Torcia LED\nColtello multiuso\nKit pronto soccorso\nAccendino"}
+              rows={8}
+            />
+          </div>
+          {lines.length > 0 && (
+            <p className="text-xs text-muted-foreground font-mono">
+              {lines.length} oggett{lines.length === 1 ? "o" : "i"} da aggiungere
+            </p>
+          )}
+          <Button onClick={handleSubmit} className="w-full" disabled={lines.length === 0}>
+            Aggiungi {lines.length > 0 ? lines.length : ""} oggett{lines.length === 1 ? "o" : "i"}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

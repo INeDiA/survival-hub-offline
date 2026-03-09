@@ -5,7 +5,7 @@ import { z } from "zod";
 
 const CURRENT_VERSION = 1;
 
-const categoryValues = CATEGORIES.map(c => c.id) as [ItemCategory, ...ItemCategory[]];
+const categoryValues = CATEGORIES.map(c => c.value) as [ItemCategory, ...ItemCategory[]];
 
 const exportSchema = z.object({
   version: z.number(),

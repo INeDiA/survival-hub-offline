@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
-import { WeightUnitProvider } from "@/hooks/use-weight-unit";
+import { WeightUnitProvider } from "@/hooks/use-weight-unit.tsx";
 import Index from "./pages/Index.tsx";
 import BagDetail from "./pages/BagDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";

@@ -141,6 +141,10 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
             <Label>Note</Label>
             <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Note aggiuntive..." />
           </div>
+          <div className="flex items-center gap-3">
+            <Switch checked={alreadyInBag} onCheckedChange={setAlreadyInBag} id="already-in-bag" />
+            <Label htmlFor="already-in-bag" className="text-sm cursor-pointer">Già nello zaino</Label>
+          </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>
             Aggiungi
           </Button>

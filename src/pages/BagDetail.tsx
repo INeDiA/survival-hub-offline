@@ -236,6 +236,7 @@ const BagDetail = () => {
           renderItems(sorted, sortKey, checklistMode)
         )}
       </main>
+      <EditBagDialog bag={bag} open={editBagOpen} onOpenChange={setEditBagOpen} />
     </div>
   );
 };

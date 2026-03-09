@@ -92,8 +92,8 @@ export function AddItemDialog({ bagId }: AddItemDialogProps) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Peso (g)</Label>
-              <Input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
+              <Label>Peso ({unit})</Label>
+              <Input type="number" step={unit === "kg" ? "0.01" : "1"} value={weight} onChange={(e) => setWeight(e.target.value)} />
             </div>
             <div>
               <Label>Quantità</Label>

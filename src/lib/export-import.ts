@@ -57,6 +57,8 @@ export function downloadJson(json: string, filename: string) {
 export async function importFromJson(json: string): Promise<{ bags: number; items: number }> {
   const raw = JSON.parse(json);
   const data = exportSchema.parse(raw);
-  await importData(data.bags, data.items);
-  return { bags: data.bags.length, items: data.items.length };
+  const bags = data.bags as unknown as ExportData["bags"];
+  const items = data.items as unknown as ExportData["items"];
+  await importData(bags, items);
+  return { bags: bags.length, items: items.length };
 }

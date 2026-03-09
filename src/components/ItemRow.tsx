@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Trash2, Pencil, ArrowRightLeft } from "lucide-react";
+import { Trash2, Pencil, ArrowRightLeft, ArrowUpDown } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ExpiryBadge } from "@/components/ExpiryBadge";
 import { getCategoryInfo, type Item } from "@/lib/types";
@@ -9,6 +8,7 @@ import { useSaveItem, useDeleteItem } from "@/hooks/use-items";
 import { cn } from "@/lib/utils";
 import { EditItemDialog } from "@/components/EditItemDialog";
 import { MoveItemDialog } from "@/components/MoveItemDialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ItemRowProps {
   item: Item;
@@ -32,10 +32,9 @@ export function ItemRow({ item }: ItemRowProps) {
         "flex items-center gap-3 rounded-md border p-3 transition-colors",
         item.checked && "bg-success/10 border-success/30"
       )}>
-        <Checkbox checked={item.checked} onCheckedChange={toggleChecked} />
         <span className="text-lg" aria-hidden>{cat.icon}</span>
         <div className="flex-1 min-w-0">
-          <div className={cn("font-medium text-sm", item.checked && "line-through text-muted-foreground")}>
+          <div className="font-medium text-sm">
             {item.name}
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
@@ -45,6 +44,26 @@ export function ItemRow({ item }: ItemRowProps) {
           </div>
         </div>
         <div className="flex items-center gap-1">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "h-8 w-8",
+                  item.checked
+                    ? "text-success hover:text-warning"
+                    : "text-muted-foreground hover:text-success"
+                )}
+                onClick={toggleChecked}
+              >
+                <ArrowUpDown className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {item.checked ? "Sposta in 'Da aggiungere'" : "Sposta in 'Nello zaino'"}
+            </TooltipContent>
+          </Tooltip>
           <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" onClick={() => setEditOpen(true)}>
             <Pencil className="h-4 w-4" />
           </Button>

@@ -254,20 +254,16 @@ export function useLanguage() {
 }
 
 const categoryKeyMap: Record<string, keyof Translations> = {
-  water: "cat_water",
-  food: "cat_food",
-  shelter: "cat_shelter",
-  "first-aid": "cat_firstAid",
-  fire: "cat_fire",
-  tools: "cat_tools",
+  "food-water": "cat_foodWater",
   hygiene: "cat_hygiene",
-  communication: "cat_communication",
-  documents: "cat_documents",
   clothing: "cat_clothing",
+  medicine: "cat_medicine",
+  survival: "cat_survival",
   lighting: "cat_lighting",
-  navigation: "cat_navigation",
-  defense: "cat_defense",
-  other: "cat_other",
+  tactical: "cat_tactical",
+  multiuse: "cat_multiuse",
+  notes: "cat_notes",
+  accessories: "cat_accessories",
 };
 
 export function useCategoryLabel(category: string): string {

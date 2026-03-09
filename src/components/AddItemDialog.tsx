@@ -35,6 +35,7 @@ export function AddItemDialog({ bagId }: AddItemDialogProps) {
     setName("");
     setCategory("other");
     setWeight("0");
+    setWeightUnit("kg");
     setQuantity("1");
     setExpiryDate(undefined);
     setNotes("");

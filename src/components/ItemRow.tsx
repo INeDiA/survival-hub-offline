@@ -17,7 +17,7 @@ interface ItemRowProps {
 export function ItemRow({ item, checklistMode }: ItemRowProps) {
   const saveItem = useSaveItem();
   const deleteItem = useDeleteItem();
-  const { formatWeight } = useWeightUnit();
+  const formatWeight = (g: number) => `${(g / 1000).toFixed(2)} kg`;
   const cat = getCategoryInfo(item.category);
   const [editOpen, setEditOpen] = useState(false);
   const [moveOpen, setMoveOpen] = useState(false);

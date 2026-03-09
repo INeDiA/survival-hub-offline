@@ -83,8 +83,17 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Peso ({unit})</Label>
-              <Input type="number" step={unit === "kg" ? "0.01" : "1"} value={weight} onChange={(e) => setWeight(e.target.value)} />
+              <Label>Peso</Label>
+              <div className="flex gap-2">
+                <Input type="number" step={weightUnit === "kg" ? "0.01" : "1"} value={weight} onChange={(e) => setWeight(e.target.value)} className="flex-1" />
+                <Select value={weightUnit} onValueChange={(v) => setWeightUnit(v as "kg" | "g")}>
+                  <SelectTrigger className="w-20"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="kg">kg</SelectItem>
+                    <SelectItem value="g">g</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div>
               <Label>Quantità</Label>

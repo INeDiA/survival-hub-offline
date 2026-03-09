@@ -60,9 +60,15 @@ export function AddBagDialog() {
             <Label htmlFor="bag-desc">Descrizione</Label>
             <Textarea id="bag-desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Zaino principale per evacuazione..." />
           </div>
-          <div>
-            <Label htmlFor="bag-weight">Limite peso ({unit})</Label>
-            <Input id="bag-weight" type="number" step={unit === "kg" ? "0.1" : "1"} value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="bag-weight-limit">Limite peso ({unit})</Label>
+              <Input id="bag-weight-limit" type="number" step={unit === "kg" ? "0.1" : "1"} value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
+            </div>
+            <div>
+              <Label htmlFor="bag-weight">Peso zaino ({unit})</Label>
+              <Input id="bag-weight" type="number" step={unit === "kg" ? "0.01" : "1"} value={bagWeight} onChange={(e) => setBagWeight(e.target.value)} />
+            </div>
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>
             Crea Zaino

@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import { useLanguage } from "@/hooks/use-language";
 import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 import { useStoragePersist } from "@/hooks/use-storage-persist";
+import { usePwaInstall } from "@/hooks/use-pwa-install";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();

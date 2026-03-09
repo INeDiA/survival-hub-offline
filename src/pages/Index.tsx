@@ -6,8 +6,6 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { ExportImportDialog } from "@/components/ExportImportDialog";
 import { getExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle } from "lucide-react";
-import { WeightUnitToggle } from "@/components/WeightUnitToggle";
-import { useWeightUnit } from "@/hooks/use-weight-unit";
 
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();

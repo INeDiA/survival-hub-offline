@@ -80,6 +80,18 @@ export function HamburgerMenu() {
             <Download className="mr-2 h-4 w-4" />
             {t.backupRestore}
           </DropdownMenuItem>
+          {pwa.canShow && !pwa.isIos && (
+            <DropdownMenuItem onClick={pwa.install}>
+              <Smartphone className="mr-2 h-4 w-4" />
+              {t.installApp}
+            </DropdownMenuItem>
+          )}
+          {pwa.canShow && pwa.isIos && (
+            <DropdownMenuItem disabled className="text-xs opacity-70">
+              <Smartphone className="mr-2 h-4 w-4" />
+              {t.iosInstallGuide}
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

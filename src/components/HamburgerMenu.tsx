@@ -24,6 +24,7 @@ export function HamburgerMenu() {
   const { theme, toggle } = useTheme();
   const { lang, t, setLang } = useLanguage();
   const { unit, setUnit } = useWeightUnit();
+  const pwa = usePwaInstall();
 
   const nextUnit = unit === "kg" ? "lbs" : "kg";
 

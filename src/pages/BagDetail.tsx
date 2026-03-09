@@ -123,7 +123,7 @@ const BagDetail = () => {
           <WeightProgress currentWeight={totalWeight} weightLimit={bag.weightLimit} />
           <div className="flex justify-between text-xs font-mono text-muted-foreground">
             <span>{items.length} oggetti</span>
-            <span className={cn(allPresent && "text-success")}>
+            <span className={cn(missing.length === 0 && items.length > 0 && "text-success")}>
               ✓ {presentItems.length}/{items.length} presenti
             </span>
           </div>

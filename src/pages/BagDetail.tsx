@@ -6,6 +6,7 @@ import { AddItemDropdown } from "@/components/AddItemDropdown";
 import { ItemRow } from "@/components/ItemRow";
 import { WeightProgress } from "@/components/WeightProgress";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
+import { EditBagDialog } from "@/components/EditBagDialog";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

@@ -108,6 +108,12 @@ const translations = {
     storageDenied: "Your browser may delete app data under storage pressure. Export a backup regularly to avoid data loss.",
     storageDismiss: "Got it",
     
+    // PWA install
+    installApp: "Install App",
+    installDesc: "Install BugOut Manager for quick access and offline use.",
+    installButton: "Install",
+    iosInstallGuide: "To install: tap the Share button, then \"Add to Home Screen\".",
+    
     // Expiry badge
     expired: "Expired",
     

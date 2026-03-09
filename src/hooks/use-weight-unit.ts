@@ -1,47 +1,63 @@
-import { useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 
-export type WeightUnit = "kg" | "g" | "lbs";
+export type WeightUnit = "kg" | "lbs";
 
-const STORAGE_KEY = "bugout-weight-unit";
 const KG_TO_LBS = 2.20462;
+const STORAGE_KEY = "bugout-weight-unit";
 
-function getStoredUnit(): WeightUnit {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === "g" || stored === "lbs") return stored;
-  return "kg";
+interface WeightUnitContextValue {
+  unit: WeightUnit;
+  setUnit: (u: WeightUnit) => void;
+  formatWeight: (grams: number) => string;
+  toGrams: (value: number) => number;
+  fromGrams: (grams: number) => number;
 }
 
-export function useWeightUnit() {
-  const [unit, setUnitState] = useState<WeightUnit>(getStoredUnit);
+const WeightUnitContext = createContext<WeightUnitContextValue>({
+  unit: "kg",
+  setUnit: () => {},
+  formatWeight: (g) => `${(g / 1000).toFixed(2)} kg`,
+  toGrams: (v) => Math.round(v * 1000),
+  fromGrams: (g) => g / 1000,
+});
+
+export function WeightUnitProvider({ children }: { children: ReactNode }) {
+  const [unit, setUnitState] = useState<WeightUnit>(() => {
+    if (typeof window === "undefined") return "kg";
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored === "lbs" ? "lbs" : "kg";
+  });
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, unit);
+  }, [unit]);
 
   const setUnit = useCallback((u: WeightUnit) => {
-    localStorage.setItem(STORAGE_KEY, u);
     setUnitState(u);
   }, []);
 
-  const toggleUnit = useCallback(() => {
-    setUnit(unit === "kg" ? "g" : unit === "g" ? "lbs" : "kg");
-  }, [unit, setUnit]);
-
   const formatWeight = useCallback((grams: number) => {
-    if (unit === "kg") return `${(grams / 1000).toFixed(2)} kg`;
     if (unit === "lbs") return `${((grams / 1000) * KG_TO_LBS).toFixed(2)} lbs`;
-    return `${grams} g`;
+    return `${(grams / 1000).toFixed(2)} kg`;
   }, [unit]);
 
-  /** Convert display value to grams for storage */
   const toGrams = useCallback((value: number) => {
-    if (unit === "kg") return Math.round(value * 1000);
     if (unit === "lbs") return Math.round((value / KG_TO_LBS) * 1000);
-    return value;
+    return Math.round(value * 1000);
   }, [unit]);
 
-  /** Convert grams to display value */
   const fromGrams = useCallback((grams: number) => {
-    if (unit === "kg") return grams / 1000;
     if (unit === "lbs") return (grams / 1000) * KG_TO_LBS;
-    return grams;
+    return grams / 1000;
   }, [unit]);
 
-  return { unit, setUnit, toggleUnit, formatWeight, toGrams, fromGrams };
+  return (
+    <WeightUnitContext.Provider value={{ unit, setUnit, formatWeight, toGrams, fromGrams }}>
+      {children}
+    </WeightUnitContext.Provider>
+  );
+}
+
+export function useWeightUnit() {
+  return useContext(WeightUnitContext);
 }

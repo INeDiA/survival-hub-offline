@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
   const [quantity, setQuantity] = useState("1");
   const [expiryDate, setExpiryDate] = useState<Date | undefined>();
   const [notes, setNotes] = useState("");
+  const [alreadyInBag, setAlreadyInBag] = useState(false);
   const saveItem = useSaveItem();
 
   const toGrams = (v: number) => weightUnit === "kg" ? Math.round(v * 1000) : v;
@@ -43,6 +45,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
     setQuantity("1");
     setExpiryDate(undefined);
     setNotes("");
+    setAlreadyInBag(false);
   };
 
   const handleSubmit = () => {
@@ -55,7 +58,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
       weight: toGrams(parseFloat(weight) || 0),
       quantity: parseInt(quantity) || 1,
       expiryDate: expiryDate ? expiryDate.toISOString() : null,
-      checked: false,
+      checked: alreadyInBag,
       notes: notes.trim(),
     };
     saveItem.mutate(item, {
@@ -138,6 +141,10 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
           <div>
             <Label>Note</Label>
             <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Note aggiuntive..." />
+          </div>
+          <div className="flex items-center gap-3">
+            <Switch checked={alreadyInBag} onCheckedChange={setAlreadyInBag} id="already-in-bag" />
+            <Label htmlFor="already-in-bag" className="text-sm cursor-pointer">Già nello zaino</Label>
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>
             Aggiungi

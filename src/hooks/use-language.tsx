@@ -64,6 +64,8 @@ const translations = {
     // Item row
     moveToAdd: "Move to 'To add'",
     moveToInBag: "Move to 'In bag'",
+    movedToAdd: "Moved to 'To add'",
+    movedToInBag: "Moved to 'In bag'",
     deleteItemTitle: (name: string) => `Delete "${name}"?`,
     cannotBeUndone: "This action cannot be undone.",
     cancel: "Cancel",
@@ -179,6 +181,8 @@ const translations = {
     editItem: "Modifica Oggetto",
     moveToAdd: "Sposta in 'Da aggiungere'",
     moveToInBag: "Sposta in 'Nello zaino'",
+    movedToAdd: "Spostato in 'Da aggiungere'",
+    movedToInBag: "Spostato in 'Nello zaino'",
     deleteItemTitle: (name: string) => `Eliminare "${name}"?`,
     cannotBeUndone: "Questa azione non può essere annullata.",
     cancel: "Annulla",

@@ -37,7 +37,7 @@ export function ItemRow({ item }: ItemRowProps) {
   const toggleChecked = () => {
     const newChecked = !item.checked;
     saveItem.mutate({ ...item, checked: newChecked });
-    toast(newChecked ? t.moveToInBag : t.moveToAdd, { duration: 1500 });
+    toast(newChecked ? t.movedToInBag : t.movedToAdd, { duration: 1500 });
   };
 
   return (

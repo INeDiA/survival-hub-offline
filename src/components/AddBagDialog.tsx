@@ -23,7 +23,7 @@ export function AddBagDialog() {
       id: crypto.randomUUID(),
       name: name.trim(),
       description: description.trim(),
-      weightLimit: parseInt(weightLimit) || 15000,
+      weightLimit: toGrams(parseFloat(weightLimit) || 15),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

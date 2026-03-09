@@ -60,8 +60,8 @@ const BagDetail = () => {
   const { data: items = [] } = useItems(id!);
   const [filterCategory, setFilterCategory] = useState<ItemCategory | "all">("all");
   const [sortKey, setSortKey] = useState<SortKey>("category");
-  const [missingOpen, setMissingOpen] = useState(true);
-  const [presentOpen, setPresentOpen] = useState(false);
+  const [missingOpen, setMissingOpen] = useState(false);
+  const [presentOpen, setPresentOpen] = useState(true);
   const [editBagOpen, setEditBagOpen] = useState(false);
 
   const presentItems = items.filter((i) => i.checked);

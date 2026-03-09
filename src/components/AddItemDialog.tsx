@@ -45,7 +45,7 @@ export function AddItemDialog({ bagId }: AddItemDialogProps) {
       bagId,
       name: name.trim(),
       category,
-      weight: parseInt(weight) || 0,
+      weight: toGrams(parseFloat(weight) || 0),
       quantity: parseInt(quantity) || 1,
       expiryDate: expiryDate ? expiryDate.toISOString() : null,
       checked: false,

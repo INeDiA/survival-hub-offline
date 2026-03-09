@@ -7,13 +7,15 @@ import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 import { useSaveBag } from "@/hooks/use-bags";
 import type { Bag } from "@/lib/types";
+import { useWeightUnit } from "@/hooks/use-weight-unit";
 
 export function AddBagDialog() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [weightLimit, setWeightLimit] = useState("15000");
+  const [weightLimit, setWeightLimit] = useState("15");
   const saveBag = useSaveBag();
+  const { unit, toGrams } = useWeightUnit();
 
   const handleSubmit = () => {
     if (!name.trim()) return;
@@ -21,7 +23,7 @@ export function AddBagDialog() {
       id: crypto.randomUUID(),
       name: name.trim(),
       description: description.trim(),
-      weightLimit: parseInt(weightLimit) || 15000,
+      weightLimit: toGrams(parseFloat(weightLimit) || 15),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -30,7 +32,7 @@ export function AddBagDialog() {
         setOpen(false);
         setName("");
         setDescription("");
-        setWeightLimit("15000");
+        setWeightLimit("15");
       },
     });
   };
@@ -56,8 +58,8 @@ export function AddBagDialog() {
             <Textarea id="bag-desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Zaino principale per evacuazione..." />
           </div>
           <div>
-            <Label htmlFor="bag-weight">Limite peso (grammi)</Label>
-            <Input id="bag-weight" type="number" value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
+            <Label htmlFor="bag-weight">Limite peso ({unit})</Label>
+            <Input id="bag-weight" type="number" step={unit === "kg" ? "0.1" : "1"} value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>
             Crea Zaino

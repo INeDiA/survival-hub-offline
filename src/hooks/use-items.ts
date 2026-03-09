@@ -24,12 +24,13 @@ export function useSaveItem() {
   });
 }
 
-export function useDeleteItem() {
+export function useDeleteItem(bagId?: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: deleteItem,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["items"] });
+      if (bagId) qc.invalidateQueries({ queryKey: ["items", bagId] });
     },
   });
 }

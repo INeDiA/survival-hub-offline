@@ -1,5 +1,6 @@
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { useWeightUnit } from "@/hooks/use-weight-unit";
 
 interface WeightProgressProps {
   currentWeight: number;
@@ -8,14 +9,10 @@ interface WeightProgressProps {
 }
 
 export function WeightProgress({ currentWeight, weightLimit, className }: WeightProgressProps) {
+  const { formatWeight } = useWeightUnit();
   const percentage = weightLimit > 0 ? Math.min((currentWeight / weightLimit) * 100, 100) : 0;
   const isOver = currentWeight > weightLimit;
   const isWarning = percentage > 80 && !isOver;
-
-  const formatWeight = (g: number) => {
-    if (g >= 1000) return `${(g / 1000).toFixed(1)} kg`;
-    return `${g} g`;
-  };
 
   return (
     <div className={cn("space-y-1", className)}>

@@ -90,7 +90,7 @@ const BagDetail = () => {
 
   const missing = useMemo(() => sorted.filter((i) => !i.checked), [sorted]);
   const present = useMemo(() => sorted.filter((i) => i.checked), [sorted]);
-  
+
 
   if (!bag) {
     return (

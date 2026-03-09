@@ -21,35 +21,27 @@ export interface Item {
 }
 
 export type ItemCategory =
-  | "water"
-  | "food"
-  | "shelter"
-  | "first-aid"
-  | "fire"
-  | "tools"
+  | "food-water"
   | "hygiene"
-  | "communication"
-  | "documents"
   | "clothing"
+  | "medicine"
+  | "equipment"
   | "lighting"
-  | "navigation"
-  | "defense"
+  | "tactical"
+  | "notes"
+  | "accessories"
   | "other";
 
 export const CATEGORIES: { value: ItemCategory; label: string; icon: string }[] = [
-  { value: "water", label: "Acqua", icon: "💧" },
-  { value: "food", label: "Cibo", icon: "🥫" },
-  { value: "shelter", label: "Riparo", icon: "⛺" },
-  { value: "first-aid", label: "Primo Soccorso", icon: "🏥" },
-  { value: "fire", label: "Fuoco", icon: "🔥" },
-  { value: "tools", label: "Strumenti", icon: "🔧" },
+  { value: "food-water", label: "Cibo e acqua", icon: "🍽️" },
   { value: "hygiene", label: "Igiene", icon: "🧼" },
-  { value: "communication", label: "Comunicazione", icon: "📻" },
-  { value: "documents", label: "Documenti", icon: "📄" },
   { value: "clothing", label: "Abbigliamento", icon: "👕" },
+  { value: "medicine", label: "Medicinali", icon: "💊" },
+  { value: "equipment", label: "Attrezzatura", icon: "🏕️" },
   { value: "lighting", label: "Illuminazione", icon: "🔦" },
-  { value: "navigation", label: "Navigazione", icon: "🧭" },
-  { value: "defense", label: "Difesa", icon: "🛡️" },
+  { value: "tactical", label: "Tattica", icon: "🎯" },
+  { value: "notes", label: "Appunti & Documenti", icon: "📝" },
+  { value: "accessories", label: "Accessori", icon: "🎒" },
   { value: "other", label: "Altro", icon: "📦" },
 ];
 

@@ -29,7 +29,7 @@ export function BulkAddDialog({ bagId, open, onOpenChange }: BulkAddDialogProps)
         id: crypto.randomUUID(),
         bagId,
         name,
-        category: "other",
+        category: "accessories",
         weight: 0,
         quantity: 1,
         expiryDate: null,

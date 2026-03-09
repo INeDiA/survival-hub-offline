@@ -28,7 +28,8 @@ export function AddItemDialog({ bagId }: AddItemDialogProps) {
   const [expiryDate, setExpiryDate] = useState<Date | undefined>();
   const [notes, setNotes] = useState("");
   const saveItem = useSaveItem();
-  const { unit, toGrams } = useWeightUnit();
+
+  const toGrams = (v: number) => weightUnit === "kg" ? Math.round(v * 1000) : v;
 
   const reset = () => {
     setName("");

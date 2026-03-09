@@ -15,6 +15,7 @@ const exportSchema = z.object({
     name: z.string().min(1).max(200),
     description: z.string().max(1000),
     weightLimit: z.number().min(0).max(1_000_000),
+    bagWeight: z.number().min(0).max(1_000_000).default(0),
     createdAt: z.string(),
     updatedAt: z.string(),
   })),

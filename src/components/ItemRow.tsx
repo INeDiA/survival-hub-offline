@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { Trash2, Pencil, ArrowRightLeft, ArrowUpDown } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ExpiryBadge } from "@/components/ExpiryBadge";
@@ -8,7 +9,7 @@ import { useSaveItem, useDeleteItem } from "@/hooks/use-items";
 import { cn } from "@/lib/utils";
 import { EditItemDialog } from "@/components/EditItemDialog";
 import { MoveItemDialog } from "@/components/MoveItemDialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
 import { useLanguage, useCategoryLabel } from "@/hooks/use-language";
 import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 
@@ -34,7 +35,9 @@ export function ItemRow({ item }: ItemRowProps) {
   const catIcon = catIcons[item.category] || "📦";
 
   const toggleChecked = () => {
-    saveItem.mutate({ ...item, checked: !item.checked });
+    const newChecked = !item.checked;
+    saveItem.mutate({ ...item, checked: newChecked });
+    toast(newChecked ? t.moveToInBag : t.moveToAdd, { duration: 1500 });
   };
 
   return (
@@ -55,26 +58,19 @@ export function ItemRow({ item }: ItemRowProps) {
           </div>
         </div>
         <div className="flex items-center gap-1">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  "h-8 w-8",
-                  item.checked
-                    ? "text-success hover:text-warning"
-                    : "text-muted-foreground hover:text-success"
-                )}
-                onClick={toggleChecked}
-              >
-                <ArrowUpDown className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              {item.checked ? t.moveToAdd : t.moveToInBag}
-            </TooltipContent>
-          </Tooltip>
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn(
+              "h-8 w-8",
+              item.checked
+                ? "text-success hover:text-warning"
+                : "text-muted-foreground hover:text-success"
+            )}
+            onClick={toggleChecked}
+          >
+            <ArrowUpDown className="h-4 w-4" />
+          </Button>
           <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" onClick={() => setEditOpen(true)}>
             <Pencil className="h-4 w-4" />
           </Button>

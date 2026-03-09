@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useTheme } from "@/hooks/use-theme";
 import { useLanguage } from "@/hooks/use-language";
 import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
+import { usePwaInstall } from "@/hooks/use-pwa-install";
 
 export function HamburgerMenu() {
   const [backupOpen, setBackupOpen] = useState(false);

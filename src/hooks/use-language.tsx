@@ -258,12 +258,12 @@ const categoryKeyMap: Record<string, keyof Translations> = {
   hygiene: "cat_hygiene",
   clothing: "cat_clothing",
   medicine: "cat_medicine",
-  survival: "cat_survival",
+  equipment: "cat_equipment",
   lighting: "cat_lighting",
   tactical: "cat_tactical",
-  multiuse: "cat_multiuse",
   notes: "cat_notes",
   accessories: "cat_accessories",
+  other: "cat_other",
 };
 
 export function useCategoryLabel(category: string): string {

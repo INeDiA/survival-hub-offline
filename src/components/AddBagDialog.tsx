@@ -14,6 +14,7 @@ export function AddBagDialog() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [weightLimit, setWeightLimit] = useState("15");
+  const [bagWeight, setBagWeight] = useState("0");
   const saveBag = useSaveBag();
   const { unit, toGrams } = useWeightUnit();
 
@@ -24,6 +25,7 @@ export function AddBagDialog() {
       name: name.trim(),
       description: description.trim(),
       weightLimit: toGrams(parseFloat(weightLimit) || 15),
+      bagWeight: toGrams(parseFloat(bagWeight) || 0),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

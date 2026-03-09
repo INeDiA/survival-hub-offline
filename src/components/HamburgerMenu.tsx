@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Menu, Download, Upload, Moon, Sun, Globe } from "lucide-react";
+import { Menu, Download, Upload, Moon, Sun, Globe, Weight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,6 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useTheme } from "@/hooks/use-theme";
 import { useLanguage } from "@/hooks/use-language";
+import { useWeightUnit } from "@/hooks/use-weight-unit";
 
 export function HamburgerMenu() {
   const [backupOpen, setBackupOpen] = useState(false);
@@ -21,6 +22,9 @@ export function HamburgerMenu() {
   const qc = useQueryClient();
   const { theme, toggle } = useTheme();
   const { lang, t, setLang } = useLanguage();
+  const { unit, setUnit } = useWeightUnit();
+
+  const nextUnit = unit === "kg" ? "lbs" : "kg";
 
   const handleExport = async () => {
     try {
@@ -64,6 +68,10 @@ export function HamburgerMenu() {
           <DropdownMenuItem onClick={() => setLang(lang === "en" ? "it" : "en")}>
             <Globe className="mr-2 h-4 w-4" />
             {lang === "en" ? "Italiano" : "English"}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setUnit(nextUnit)}>
+            <Weight className="mr-2 h-4 w-4" />
+            {unit === "kg" ? "lbs" : "kg"}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setBackupOpen(true)}>

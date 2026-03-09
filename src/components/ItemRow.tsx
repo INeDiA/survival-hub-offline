@@ -10,6 +10,7 @@ import { EditItemDialog } from "@/components/EditItemDialog";
 import { MoveItemDialog } from "@/components/MoveItemDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage, useCategoryLabel } from "@/hooks/use-language";
+import { useWeightUnit } from "@/hooks/use-weight-unit";
 
 interface ItemRowProps {
   item: Item;
@@ -18,7 +19,7 @@ interface ItemRowProps {
 export function ItemRow({ item }: ItemRowProps) {
   const saveItem = useSaveItem();
   const deleteItem = useDeleteItem();
-  const formatWeight = (g: number) => `${(g / 1000).toFixed(2)} kg`;
+  const { formatWeight } = useWeightUnit();
   const catLabel = useCategoryLabel(item.category);
   const { t } = useLanguage();
   const [editOpen, setEditOpen] = useState(false);

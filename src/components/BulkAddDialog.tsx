@@ -31,7 +31,7 @@ export function BulkAddDialog({ bagId, open, onOpenChange }: BulkAddDialogProps)
         weight: 0,
         quantity: 1,
         expiryDate: null,
-        checked: false,
+        checked: alreadyInBag,
         notes: "",
       };
       saveItem.mutate(item);

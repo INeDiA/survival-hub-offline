@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useSaveItem } from "@/hooks/use-items";
 import { CATEGORIES, type Item, type ItemCategory } from "@/lib/types";
-import { useWeightUnit } from "@/hooks/use-weight-unit";
+import { Select as UnitSelect } from "@/components/ui/select";
 
 interface AddItemDialogProps {
   bagId: string;
@@ -23,16 +23,19 @@ export function AddItemDialog({ bagId }: AddItemDialogProps) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<ItemCategory>("other");
   const [weight, setWeight] = useState("0");
+  const [weightUnit, setWeightUnit] = useState<"kg" | "g">("kg");
   const [quantity, setQuantity] = useState("1");
   const [expiryDate, setExpiryDate] = useState<Date | undefined>();
   const [notes, setNotes] = useState("");
   const saveItem = useSaveItem();
-  const { unit, toGrams } = useWeightUnit();
+
+  const toGrams = (v: number) => weightUnit === "kg" ? Math.round(v * 1000) : v;
 
   const reset = () => {
     setName("");
     setCategory("other");
     setWeight("0");
+    setWeightUnit("kg");
     setQuantity("1");
     setExpiryDate(undefined);
     setNotes("");
@@ -92,8 +95,17 @@ export function AddItemDialog({ bagId }: AddItemDialogProps) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Peso ({unit})</Label>
-              <Input type="number" step={unit === "kg" ? "0.01" : "1"} value={weight} onChange={(e) => setWeight(e.target.value)} />
+              <Label>Peso</Label>
+              <div className="flex gap-2">
+                <Input type="number" step={weightUnit === "kg" ? "0.01" : "1"} value={weight} onChange={(e) => setWeight(e.target.value)} className="flex-1" />
+                <Select value={weightUnit} onValueChange={(v) => setWeightUnit(v as "kg" | "g")}>
+                  <SelectTrigger className="w-20"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="kg">kg</SelectItem>
+                    <SelectItem value="g">g</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div>
               <Label>Quantità</Label>

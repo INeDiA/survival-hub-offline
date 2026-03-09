@@ -6,13 +6,14 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { ExportImportDialog } from "@/components/ExportImportDialog";
 import { getExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle } from "lucide-react";
-import { WeightUnitToggle } from "@/components/WeightUnitToggle";
-import { useWeightUnit } from "@/hooks/use-weight-unit";
 
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();
   const { data: allItems = [] } = useAllItems();
-  const { formatWeight } = useWeightUnit();
+
+  const formatWeight = (g: number) => {
+    return `${(g / 1000).toFixed(2)} kg`;
+  };
 
   const totalItems = allItems.length;
   const totalWeight = allItems.reduce((s, i) => s + i.weight * i.quantity, 0);
@@ -28,7 +29,6 @@ const Index = () => {
             <h1 className="text-lg font-mono font-bold tracking-tight">BugOut Manager</h1>
           </div>
           <div className="flex items-center gap-2">
-            <WeightUnitToggle />
             <ExportImportDialog />
             <ThemeToggle />
           </div>

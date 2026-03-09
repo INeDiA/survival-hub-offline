@@ -5,7 +5,6 @@ import { Trash2, Pencil, ArrowRightLeft } from "lucide-react";
 import { ExpiryBadge } from "@/components/ExpiryBadge";
 import { getCategoryInfo, type Item } from "@/lib/types";
 import { useSaveItem, useDeleteItem } from "@/hooks/use-items";
-import { useWeightUnit } from "@/hooks/use-weight-unit";
 import { cn } from "@/lib/utils";
 import { EditItemDialog } from "@/components/EditItemDialog";
 import { MoveItemDialog } from "@/components/MoveItemDialog";
@@ -18,7 +17,7 @@ interface ItemRowProps {
 export function ItemRow({ item, checklistMode }: ItemRowProps) {
   const saveItem = useSaveItem();
   const deleteItem = useDeleteItem();
-  const { formatWeight } = useWeightUnit();
+  const formatWeight = (g: number) => `${(g / 1000).toFixed(2)} kg`;
   const cat = getCategoryInfo(item.category);
   const [editOpen, setEditOpen] = useState(false);
   const [moveOpen, setMoveOpen] = useState(false);

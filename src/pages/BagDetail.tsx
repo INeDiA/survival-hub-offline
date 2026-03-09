@@ -7,12 +7,54 @@ import { ItemRow } from "@/components/ItemRow";
 import { WeightProgress } from "@/components/WeightProgress";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ClipboardCheck, List } from "lucide-react";
+import { ArrowLeft, ClipboardCheck, List, ChevronRight, CheckCircle2, Package } from "lucide-react";
 import { CATEGORIES, getCategoryInfo, type ItemCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type SortKey = "name" | "weight" | "category";
+
+function renderItems(
+  items: typeof import("@/lib/types").Item[],
+  sortKey: SortKey,
+  checklistMode: boolean
+) {
+  if (sortKey === "category") {
+    const map = new Map<ItemCategory, typeof items>();
+    for (const item of items) {
+      const list = map.get(item.category) || [];
+      list.push(item);
+      map.set(item.category, list);
+    }
+    return (
+      <div className="space-y-4">
+        {Array.from(map.entries()).map(([cat, catItems]) => {
+          const info = getCategoryInfo(cat);
+          return (
+            <div key={cat}>
+              <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
+                {info.icon} {info.label}
+              </h3>
+              <div className="space-y-2">
+                {catItems.map((item) => (
+                  <ItemRow key={item.id} item={item} checklistMode={checklistMode} />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+  return (
+    <div className="space-y-2">
+      {items.map((item) => (
+        <ItemRow key={item.id} item={item} checklistMode={checklistMode} />
+      ))}
+    </div>
+  );
+}
 
 const BagDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +64,8 @@ const BagDetail = () => {
   const [checklistMode, setChecklistMode] = useState(false);
   const [filterCategory, setFilterCategory] = useState<ItemCategory | "all">("all");
   const [sortKey, setSortKey] = useState<SortKey>("category");
+  const [missingOpen, setMissingOpen] = useState(false);
+  const [presentOpen, setPresentOpen] = useState(false);
 
   const totalWeight = items.reduce((s, i) => s + i.weight * i.quantity, 0);
   const checkedCount = items.filter((i) => i.checked).length;
@@ -42,23 +86,14 @@ const BagDetail = () => {
         return copy.sort((a, b) => a.name.localeCompare(b.name));
       case "weight":
         return copy.sort((a, b) => b.weight * b.quantity - a.weight * a.quantity);
-      case "category":
       default:
         return copy;
     }
   }, [filtered, sortKey]);
 
-  // Group by category (only used when sorting by category)
-  const grouped = useMemo(() => {
-    if (sortKey !== "category") return null;
-    const map = new Map<ItemCategory, typeof items>();
-    for (const item of sorted) {
-      const list = map.get(item.category) || [];
-      list.push(item);
-      map.set(item.category, list);
-    }
-    return map;
-  }, [sorted, sortKey]);
+  const missing = useMemo(() => sorted.filter((i) => !i.checked), [sorted]);
+  const present = useMemo(() => sorted.filter((i) => i.checked), [sorted]);
+  const allPresent = items.length > 0 && missing.length === 0;
 
   if (!bag) {
     return (
@@ -99,11 +134,9 @@ const BagDetail = () => {
           <WeightProgress currentWeight={totalWeight} weightLimit={bag.weightLimit} />
           <div className="flex justify-between text-xs font-mono text-muted-foreground">
             <span>{items.length} oggetti</span>
-            {checklistMode && (
-              <span className={cn(checkedCount === items.length && items.length > 0 && "text-success")}>
-                ✓ {checkedCount}/{items.length}
-              </span>
-            )}
+            <span className={cn(allPresent && "text-success")}>
+              ✓ {checkedCount}/{items.length} presenti
+            </span>
           </div>
         </div>
 
@@ -150,30 +183,51 @@ const BagDetail = () => {
           <div className="rounded-lg border border-dashed p-8 text-center">
             <p className="text-muted-foreground text-sm">Nessun oggetto nello zaino</p>
           </div>
-        ) : grouped ? (
+        ) : checklistMode ? (
           <div className="space-y-4">
-            {Array.from(grouped.entries()).map(([cat, catItems]) => {
-              const info = getCategoryInfo(cat);
-              return (
-                <div key={cat}>
-                  <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
-                    {info.icon} {info.label}
-                  </h3>
-                  <div className="space-y-2">
-                    {catItems.map((item) => (
-                      <ItemRow key={item.id} item={item} checklistMode={checklistMode} />
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+            {/* Banner zaino completo */}
+            {allPresent && (
+              <div className="rounded-lg border border-success/30 bg-success/10 p-4 flex items-center gap-3">
+                <CheckCircle2 className="h-5 w-5 text-success" />
+                <span className="text-sm font-medium text-success">Zaino completo — tutti gli oggetti sono presenti!</span>
+              </div>
+            )}
+
+            {/* Da aggiungere */}
+            <Collapsible open={missingOpen} onOpenChange={setMissingOpen}>
+              <CollapsibleTrigger className="flex items-center gap-2 w-full rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors">
+                <ChevronRight className={cn("h-4 w-4 transition-transform", missingOpen && "rotate-90")} />
+                <span className="text-sm font-mono font-semibold">⬜ Da aggiungere</span>
+                <span className="ml-auto text-xs font-mono text-muted-foreground">{missing.length}</span>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-3">
+                {missing.length === 0 ? (
+                  <p className="text-xs text-muted-foreground pl-6">Nessun oggetto mancante</p>
+                ) : (
+                  renderItems(missing, sortKey, checklistMode)
+                )}
+              </CollapsibleContent>
+            </Collapsible>
+
+            {/* Nello zaino */}
+            <Collapsible open={presentOpen} onOpenChange={setPresentOpen}>
+              <CollapsibleTrigger className="flex items-center gap-2 w-full rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors">
+                <ChevronRight className={cn("h-4 w-4 transition-transform", presentOpen && "rotate-90")} />
+                <span className="text-sm font-mono font-semibold">📦 Nello zaino</span>
+                <span className="ml-auto text-xs font-mono text-muted-foreground">{present.length}</span>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-3">
+                {present.length === 0 ? (
+                  <p className="text-xs text-muted-foreground pl-6">Nessun oggetto presente</p>
+                ) : (
+                  renderItems(present, sortKey, checklistMode)
+                )}
+              </CollapsibleContent>
+            </Collapsible>
           </div>
         ) : (
-          <div className="space-y-2">
-            {sorted.map((item) => (
-              <ItemRow key={item.id} item={item} checklistMode={checklistMode} />
-            ))}
-          </div>
+          // Normal mode — flat or grouped
+          renderItems(sorted, sortKey, checklistMode)
         )}
       </main>
     </div>

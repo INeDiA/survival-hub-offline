@@ -16,7 +16,8 @@ export function BagCard({ bag }: BagCardProps) {
   const navigate = useNavigate();
   const deleteBag = useDeleteBag();
   const { data: items = [] } = useItems(bag.id);
-  const totalWeight = items.reduce((s, i) => s + i.weight * i.quantity, 0);
+  const presentItems = items.filter((i) => i.checked);
+  const totalWeight = (bag.bagWeight || 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
   const expiring = getExpiringItems(items);
 
   return (

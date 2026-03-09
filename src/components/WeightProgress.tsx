@@ -1,6 +1,6 @@
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { useWeightUnit } from "@/hooks/use-weight-unit";
+
 
 interface WeightProgressProps {
   currentWeight: number;

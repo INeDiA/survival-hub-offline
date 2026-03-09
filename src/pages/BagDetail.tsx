@@ -67,6 +67,7 @@ const BagDetail = () => {
   const [sortKey, setSortKey] = useState<SortKey>("category");
   const [missingOpen, setMissingOpen] = useState(false);
   const [presentOpen, setPresentOpen] = useState(false);
+  const [editBagOpen, setEditBagOpen] = useState(false);
 
   const presentItems = items.filter((i) => i.checked);
   const totalWeight = (bag?.bagWeight || 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);

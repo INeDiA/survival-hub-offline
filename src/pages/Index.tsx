@@ -2,8 +2,7 @@ import { useBags } from "@/hooks/use-bags";
 import { useAllItems } from "@/hooks/use-items";
 import { BagCard } from "@/components/BagCard";
 import { AddBagDialog } from "@/components/AddBagDialog";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { ExportImportDialog } from "@/components/ExportImportDialog";
+import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { getExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle } from "lucide-react";
 

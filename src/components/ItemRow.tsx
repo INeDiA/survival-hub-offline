@@ -19,7 +19,7 @@ interface ItemRowProps {
 export function ItemRow({ item }: ItemRowProps) {
   const saveItem = useSaveItem();
   const deleteItem = useDeleteItem();
-  const formatWeight = (g: number) => `${(g / 1000).toFixed(2)} kg`;
+  const { formatWeight } = useWeightUnit();
   const catLabel = useCategoryLabel(item.category);
   const { t } = useLanguage();
   const [editOpen, setEditOpen] = useState(false);

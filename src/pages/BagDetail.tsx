@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 type SortKey = "name" | "weight" | "category";
 
 function renderItems(
-  items: typeof import("@/lib/types").Item[],
+  items: Item[],
   sortKey: SortKey,
   checklistMode: boolean
 ) {

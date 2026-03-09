@@ -10,7 +10,7 @@ import { EditItemDialog } from "@/components/EditItemDialog";
 import { MoveItemDialog } from "@/components/MoveItemDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage, useCategoryLabel } from "@/hooks/use-language";
-import { useWeightUnit } from "@/hooks/use-weight-unit";
+import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 
 interface ItemRowProps {
   item: Item;

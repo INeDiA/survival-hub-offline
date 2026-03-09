@@ -14,7 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useTheme } from "@/hooks/use-theme";
 import { useLanguage } from "@/hooks/use-language";
-import { useWeightUnit } from "@/hooks/use-weight-unit";
+import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 
 export function HamburgerMenu() {
   const [backupOpen, setBackupOpen] = useState(false);

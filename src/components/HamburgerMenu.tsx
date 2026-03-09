@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Menu, Download, Upload, Moon, Sun, Globe, Weight } from "lucide-react";
+import { Menu, Download, Upload, Moon, Sun, Globe, Weight, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

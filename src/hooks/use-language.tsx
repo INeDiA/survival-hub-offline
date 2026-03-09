@@ -279,11 +279,11 @@ export function useTranslatedCategories() {
     { value: "hygiene" as const, label: t.cat_hygiene, icon: "🧼" },
     { value: "clothing" as const, label: t.cat_clothing, icon: "👕" },
     { value: "medicine" as const, label: t.cat_medicine, icon: "💊" },
-    { value: "survival" as const, label: t.cat_survival, icon: "🏕️" },
+    { value: "equipment" as const, label: t.cat_equipment, icon: "🏕️" },
     { value: "lighting" as const, label: t.cat_lighting, icon: "🔦" },
     { value: "tactical" as const, label: t.cat_tactical, icon: "🎯" },
-    { value: "multiuse" as const, label: t.cat_multiuse, icon: "🔧" },
     { value: "notes" as const, label: t.cat_notes, icon: "📝" },
     { value: "accessories" as const, label: t.cat_accessories, icon: "🎒" },
+    { value: "other" as const, label: t.cat_other, icon: "📦" },
   ];
 }

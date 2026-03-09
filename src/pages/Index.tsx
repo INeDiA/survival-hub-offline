@@ -6,19 +6,17 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { ExportImportDialog } from "@/components/ExportImportDialog";
 import { getExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle } from "lucide-react";
+import { WeightUnitToggle } from "@/components/WeightUnitToggle";
+import { useWeightUnit } from "@/hooks/use-weight-unit";
 
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();
   const { data: allItems = [] } = useAllItems();
+  const { formatWeight } = useWeightUnit();
 
   const totalItems = allItems.length;
   const totalWeight = allItems.reduce((s, i) => s + i.weight * i.quantity, 0);
   const expiring = getExpiringItems(allItems);
-
-  const formatWeight = (g: number) => {
-    if (g >= 1000) return `${(g / 1000).toFixed(1)} kg`;
-    return `${g} g`;
-  };
 
   return (
     <div className="min-h-screen bg-background">

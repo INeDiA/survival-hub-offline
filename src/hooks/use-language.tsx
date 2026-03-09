@@ -275,19 +275,15 @@ export function useCategoryLabel(category: string): string {
 export function useTranslatedCategories() {
   const { t } = useLanguage();
   return [
-    { value: "water" as const, label: t.cat_water, icon: "💧" },
-    { value: "food" as const, label: t.cat_food, icon: "🥫" },
-    { value: "shelter" as const, label: t.cat_shelter, icon: "⛺" },
-    { value: "first-aid" as const, label: t.cat_firstAid, icon: "🏥" },
-    { value: "fire" as const, label: t.cat_fire, icon: "🔥" },
-    { value: "tools" as const, label: t.cat_tools, icon: "🔧" },
+    { value: "food-water" as const, label: t.cat_foodWater, icon: "🍽️" },
     { value: "hygiene" as const, label: t.cat_hygiene, icon: "🧼" },
-    { value: "communication" as const, label: t.cat_communication, icon: "📻" },
-    { value: "documents" as const, label: t.cat_documents, icon: "📄" },
     { value: "clothing" as const, label: t.cat_clothing, icon: "👕" },
+    { value: "medicine" as const, label: t.cat_medicine, icon: "💊" },
+    { value: "survival" as const, label: t.cat_survival, icon: "🏕️" },
     { value: "lighting" as const, label: t.cat_lighting, icon: "🔦" },
-    { value: "navigation" as const, label: t.cat_navigation, icon: "🧭" },
-    { value: "defense" as const, label: t.cat_defense, icon: "🛡️" },
-    { value: "other" as const, label: t.cat_other, icon: "📦" },
+    { value: "tactical" as const, label: t.cat_tactical, icon: "🎯" },
+    { value: "multiuse" as const, label: t.cat_multiuse, icon: "🔧" },
+    { value: "notes" as const, label: t.cat_notes, icon: "📝" },
+    { value: "accessories" as const, label: t.cat_accessories, icon: "🎒" },
   ];
 }

@@ -104,7 +104,7 @@ const translations = {
     importSuccess: (bags: number, items: number) => `Imported ${bags} bags and ${items} items`,
     importError: "Invalid or corrupted file",
     language: "Language",
-    lbsLabel: "lbs",
+    lbsLabel: "Lbs",
     
     // Expiry badge
     expired: "Expired",

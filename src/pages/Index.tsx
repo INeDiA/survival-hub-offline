@@ -10,7 +10,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { differenceInDays, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/hooks/use-language";
-import { useWeightUnit } from "@/hooks/use-weight-unit";
+import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();

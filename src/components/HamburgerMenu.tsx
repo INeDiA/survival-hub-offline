@@ -71,7 +71,7 @@ export function HamburgerMenu() {
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setUnit(nextUnit)}>
             <Weight className="mr-2 h-4 w-4" />
-            {unit === "kg" ? "lbs" : "kg"}
+            {nextUnit === "kg" ? "kg" : t.lbsLabel}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setBackupOpen(true)}>

@@ -13,8 +13,9 @@ export function AddBagDialog() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [weightLimit, setWeightLimit] = useState("15000");
+  const [weightLimit, setWeightLimit] = useState("15");
   const saveBag = useSaveBag();
+  const { unit, toGrams } = useWeightUnit();
 
   const handleSubmit = () => {
     if (!name.trim()) return;

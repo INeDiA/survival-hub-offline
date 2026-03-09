@@ -37,6 +37,7 @@ export function BulkAddDialog({ bagId, open, onOpenChange }: BulkAddDialogProps)
       saveItem.mutate(item);
     }
     setText("");
+    setAlreadyInBag(false);
     onOpenChange(false);
   };
 

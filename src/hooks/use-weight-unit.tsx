@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
+import { useLanguage } from "@/hooks/use-language";
 
 export type WeightUnit = "kg" | "lbs";
 
@@ -27,6 +28,7 @@ export function WeightUnitProvider({ children }: { children: ReactNode }) {
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored === "lbs" ? "lbs" : "kg";
   });
+  const { t } = useLanguage();
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, unit);
@@ -37,9 +39,9 @@ export function WeightUnitProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const formatWeight = useCallback((grams: number) => {
-    if (unit === "lbs") return `${((grams / 1000) * KG_TO_LBS).toFixed(2)} lbs`;
+    if (unit === "lbs") return `${((grams / 1000) * KG_TO_LBS).toFixed(2)} ${t.lbsLabel}`;
     return `${(grams / 1000).toFixed(2)} kg`;
-  }, [unit]);
+  }, [unit, t.lbsLabel]);
 
   const toGrams = useCallback((value: number) => {
     if (unit === "lbs") return Math.round((value / KG_TO_LBS) * 1000);

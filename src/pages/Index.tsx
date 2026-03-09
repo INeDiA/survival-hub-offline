@@ -38,12 +38,12 @@ const Index = () => {
 
       <main className="container py-6 space-y-6">
         {/* Stats */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-lg border bg-card p-3">
-            <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Peso Totale</p>
-            <p className="text-xl font-mono font-bold text-foreground">{formatWeight(totalWeight)}</p>
-          </div>
-          <Collapsible open={expiryOpen} onOpenChange={setExpiryOpen}>
+        <Collapsible open={expiryOpen} onOpenChange={setExpiryOpen}>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-lg border bg-card p-3">
+              <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Peso Totale</p>
+              <p className="text-xl font-mono font-bold text-foreground">{formatWeight(totalWeight)}</p>
+            </div>
             <CollapsibleTrigger className={cn(
               "w-full rounded-lg border p-3 text-left transition-colors",
               expiring.length > 0 ? "bg-warning/5 border-warning/30 hover:bg-warning/10 cursor-pointer" : "bg-card"
@@ -58,38 +58,38 @@ const Index = () => {
                 )}
               </div>
             </CollapsibleTrigger>
-            {expiring.length > 0 && (
-              <CollapsibleContent className="pt-3">
-                <div className="rounded-lg border border-warning/30 bg-warning/5 p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <AlertTriangle className="h-4 w-4 text-warning" />
-                    <span className="text-sm font-medium text-warning">Articoli in scadenza</span>
-                  </div>
-                  <div className="space-y-2">
-                    {expiring.map((item) => {
-                      const daysLeft = differenceInDays(parseISO(item.expiryDate!), new Date());
-                      const bagName = bagNameMap.get(item.bagId) || "—";
-                      return (
-                        <div key={item.id} className="flex items-center justify-between text-xs font-mono">
-                          <div className="flex-1 min-w-0">
-                            <span className="text-foreground">{item.name}</span>
-                            <span className="text-muted-foreground ml-2">({bagName})</span>
-                          </div>
-                          <span className={cn(
-                            "ml-2 whitespace-nowrap",
-                            daysLeft < 0 ? "text-destructive" : "text-warning"
-                          )}>
-                            {daysLeft < 0 ? `Scaduto da ${Math.abs(daysLeft)}g` : `${daysLeft}g`}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
+          </div>
+          {expiring.length > 0 && (
+            <CollapsibleContent className="pt-3">
+              <div className="rounded-lg border border-warning/30 bg-warning/5 p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertTriangle className="h-4 w-4 text-warning" />
+                  <span className="text-sm font-medium text-warning">Articoli in scadenza</span>
                 </div>
-              </CollapsibleContent>
-            )}
-          </Collapsible>
-        </div>
+                <div className="space-y-2">
+                  {expiring.map((item) => {
+                    const daysLeft = differenceInDays(parseISO(item.expiryDate!), new Date());
+                    const bagName = bagNameMap.get(item.bagId) || "—";
+                    return (
+                      <div key={item.id} className="flex items-center justify-between text-xs font-mono">
+                        <div className="flex-1 min-w-0">
+                          <span className="text-foreground">{item.name}</span>
+                          <span className="text-muted-foreground ml-2">({bagName})</span>
+                        </div>
+                        <span className={cn(
+                          "ml-2 whitespace-nowrap",
+                          daysLeft < 0 ? "text-destructive" : "text-warning"
+                        )}>
+                          {daysLeft < 0 ? `Scaduto da ${Math.abs(daysLeft)}g` : `${daysLeft}g`}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </CollapsibleContent>
+          )}
+        </Collapsible>
 
         {/* Bag List */}
         <div className="flex items-center justify-between">

@@ -10,7 +10,7 @@ import { EditBagDialog } from "@/components/EditBagDialog";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ChevronRight, CheckCircle2, Pencil } from "lucide-react";
+import { ArrowLeft, ChevronRight, Pencil } from "lucide-react";
 import { CATEGORIES, getCategoryInfo, type ItemCategory, type Item } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -90,7 +90,7 @@ const BagDetail = () => {
 
   const missing = useMemo(() => sorted.filter((i) => !i.checked), [sorted]);
   const present = useMemo(() => sorted.filter((i) => i.checked), [sorted]);
-  const allPresent = items.length > 0 && missing.length === 0;
+  
 
   if (!bag) {
     return (
@@ -123,7 +123,7 @@ const BagDetail = () => {
           <WeightProgress currentWeight={totalWeight} weightLimit={bag.weightLimit} />
           <div className="flex justify-between text-xs font-mono text-muted-foreground">
             <span>{items.length} oggetti</span>
-            <span className={cn(allPresent && "text-success")}>
+            <span className={cn(missing.length === 0 && items.length > 0 && "text-success")}>
               ✓ {presentItems.length}/{items.length} presenti
             </span>
           </div>
@@ -176,28 +176,19 @@ const BagDetail = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {allPresent && (
-              <div className="rounded-lg border border-success/30 bg-success/10 p-4 flex items-center gap-3">
-                <CheckCircle2 className="h-5 w-5 text-success" />
-                <span className="text-sm font-medium text-success">Zaino completo — tutti gli oggetti sono presenti!</span>
-              </div>
+            {/* Da aggiungere — hidden when empty */}
+            {missing.length > 0 && (
+              <Collapsible open={missingOpen} onOpenChange={setMissingOpen}>
+                <CollapsibleTrigger className="flex items-center gap-2 w-full rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors">
+                  <ChevronRight className={cn("h-4 w-4 transition-transform", missingOpen && "rotate-90")} />
+                  <span className="text-sm font-mono font-semibold">⬜ Da aggiungere</span>
+                  <span className="ml-auto text-xs font-mono text-muted-foreground">{missing.length}</span>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="pt-3">
+                  {renderItems(missing, sortKey)}
+                </CollapsibleContent>
+              </Collapsible>
             )}
-
-            {/* Da aggiungere */}
-            <Collapsible open={missingOpen} onOpenChange={setMissingOpen}>
-              <CollapsibleTrigger className="flex items-center gap-2 w-full rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors">
-                <ChevronRight className={cn("h-4 w-4 transition-transform", missingOpen && "rotate-90")} />
-                <span className="text-sm font-mono font-semibold">⬜ Da aggiungere</span>
-                <span className="ml-auto text-xs font-mono text-muted-foreground">{missing.length}</span>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="pt-3">
-                {missing.length === 0 ? (
-                  <p className="text-xs text-muted-foreground pl-6">Nessun oggetto mancante</p>
-                ) : (
-                  renderItems(missing, sortKey)
-                )}
-              </CollapsibleContent>
-            </Collapsible>
 
             {/* Nello zaino */}
             <Collapsible open={presentOpen} onOpenChange={setPresentOpen}>

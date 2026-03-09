@@ -1,30 +1,34 @@
 import { getAllBags, getAllItems, importData } from "./db";
-import type { ExportData } from "./types";
+import type { ExportData, ItemCategory } from "./types";
+import { CATEGORIES } from "./types";
 import { z } from "zod";
 
 const CURRENT_VERSION = 1;
+
+const categoryValues = CATEGORIES.map(c => c.value) as [ItemCategory, ...ItemCategory[]];
 
 const exportSchema = z.object({
   version: z.number(),
   exportedAt: z.string(),
   bags: z.array(z.object({
     id: z.string(),
-    name: z.string(),
-    description: z.string(),
-    weightLimit: z.number(),
+    name: z.string().min(1).max(200),
+    description: z.string().max(1000),
+    weightLimit: z.number().min(0).max(1_000_000),
+    bagWeight: z.number().min(0).max(1_000_000).default(0),
     createdAt: z.string(),
     updatedAt: z.string(),
   })),
   items: z.array(z.object({
     id: z.string(),
     bagId: z.string(),
-    name: z.string(),
-    category: z.string(),
-    weight: z.number(),
-    quantity: z.number(),
-    expiryDate: z.string().nullable(),
+    name: z.string().min(1).max(200),
+    category: z.enum(categoryValues),
+    weight: z.number().min(0).max(1_000_000),
+    quantity: z.number().int().min(1).max(9999),
+    expiryDate: z.string().datetime().nullable(),
     checked: z.boolean(),
-    notes: z.string(),
+    notes: z.string().max(2000),
   })),
 });
 
@@ -53,6 +57,8 @@ export function downloadJson(json: string, filename: string) {
 export async function importFromJson(json: string): Promise<{ bags: number; items: number }> {
   const raw = JSON.parse(json);
   const data = exportSchema.parse(raw);
-  await importData(data.bags as any, data.items as any);
-  return { bags: data.bags.length, items: data.items.length };
+  const bags = data.bags as unknown as ExportData["bags"];
+  const items = data.items as unknown as ExportData["items"];
+  await importData(bags, items);
+  return { bags: bags.length, items: items.length };
 }

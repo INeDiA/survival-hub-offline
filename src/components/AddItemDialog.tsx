@@ -16,10 +16,14 @@ import { Select as UnitSelect } from "@/components/ui/select";
 
 interface AddItemDialogProps {
   bagId: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function AddItemDialog({ bagId }: AddItemDialogProps) {
-  const [open, setOpen] = useState(false);
+export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: controlledOnOpenChange }: AddItemDialogProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = controlledOnOpenChange ?? setInternalOpen;
   const [name, setName] = useState("");
   const [category, setCategory] = useState<ItemCategory>("other");
   const [weight, setWeight] = useState("0");
@@ -64,11 +68,13 @@ export function AddItemDialog({ bagId }: AddItemDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
-          <Plus className="h-4 w-4" /> Aggiungi Oggetto
-        </Button>
-      </DialogTrigger>
+      {controlledOpen === undefined && (
+        <DialogTrigger asChild>
+          <Button variant="outline" size="sm" className="gap-2">
+            <Plus className="h-4 w-4" /> Aggiungi Oggetto
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Aggiungi Oggetto</DialogTitle>

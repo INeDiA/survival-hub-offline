@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useBag } from "@/hooks/use-bags";
 import { useItems } from "@/hooks/use-items";
-import { AddItemDialog } from "@/components/AddItemDialog";
+import { AddItemDropdown } from "@/components/AddItemDropdown";
 import { ItemRow } from "@/components/ItemRow";
 import { WeightProgress } from "@/components/WeightProgress";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
@@ -141,7 +141,7 @@ const BagDetail = () => {
                 <SelectItem value="weight">Peso ↓</SelectItem>
               </SelectContent>
             </Select>
-            <AddItemDialog bagId={id!} />
+            <AddItemDropdown bagId={id!} />
           </div>
         </div>
 

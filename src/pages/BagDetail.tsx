@@ -67,8 +67,9 @@ const BagDetail = () => {
   const [missingOpen, setMissingOpen] = useState(false);
   const [presentOpen, setPresentOpen] = useState(false);
 
-  const totalWeight = items.reduce((s, i) => s + i.weight * i.quantity, 0);
-  const checkedCount = items.filter((i) => i.checked).length;
+  const presentItems = items.filter((i) => i.checked);
+  const totalWeight = (bag?.bagWeight || 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
+  const checkedCount = presentItems.length;
 
   const usedCategories = useMemo(() => {
     const cats = new Set(items.map((i) => i.category));

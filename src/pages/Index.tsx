@@ -15,7 +15,8 @@ const Index = () => {
   };
 
   const totalItems = allItems.length;
-  const totalWeight = allItems.reduce((s, i) => s + i.weight * i.quantity, 0);
+  const presentItems = allItems.filter((i) => i.checked);
+  const totalWeight = bags.reduce((s, b) => s + (b.bagWeight || 0), 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
   const expiring = getExpiringItems(allItems);
 
   return (

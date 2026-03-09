@@ -15,6 +15,7 @@ interface BulkAddDialogProps {
 
 export function BulkAddDialog({ bagId, open, onOpenChange }: BulkAddDialogProps) {
   const [text, setText] = useState("");
+  const [alreadyInBag, setAlreadyInBag] = useState(false);
   const saveItem = useSaveItem();
 
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);

@@ -59,7 +59,7 @@ const BagDetail = () => {
   const { data: bag } = useBag(id!);
   const { data: items = [] } = useItems(id!);
   const [filterCategory, setFilterCategory] = useState<ItemCategory | "all">("all");
-  const [sortKey, setSortKey] = useState<SortKey>("category");
+  const [sortKey, setSortKey] = useState<SortKey>("name");
   const [missingOpen, setMissingOpen] = useState(false);
   const [presentOpen, setPresentOpen] = useState(true);
   const [editBagOpen, setEditBagOpen] = useState(false);

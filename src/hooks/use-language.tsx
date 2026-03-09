@@ -181,6 +181,8 @@ const translations = {
     editItem: "Modifica Oggetto",
     moveToAdd: "Sposta in 'Da aggiungere'",
     moveToInBag: "Sposta in 'Nello zaino'",
+    movedToAdd: "Spostato in 'Da aggiungere'",
+    movedToInBag: "Spostato in 'Nello zaino'",
     deleteItemTitle: (name: string) => `Eliminare "${name}"?`,
     cannotBeUndone: "Questa azione non può essere annullata.",
     cancel: "Annulla",

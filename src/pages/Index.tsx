@@ -5,12 +5,13 @@ import { BagCard } from "@/components/BagCard";
 import { AddBagDialog } from "@/components/AddBagDialog";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { getExpiringItems } from "@/components/ExpiryBadge";
-import { Package, AlertTriangle, ChevronRight } from "lucide-react";
+import { Package, AlertTriangle, ChevronRight, X } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { differenceInDays, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/hooks/use-language";
 import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
+import { useStoragePersist } from "@/hooks/use-storage-persist";
 
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();

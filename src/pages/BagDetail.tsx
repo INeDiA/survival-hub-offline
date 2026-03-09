@@ -10,19 +10,15 @@ import { EditBagDialog } from "@/components/EditBagDialog";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ClipboardCheck, List, ChevronRight, CheckCircle2, Pencil } from "lucide-react";
+import { ArrowLeft, ChevronRight, CheckCircle2, Pencil } from "lucide-react";
 import { CATEGORIES, getCategoryInfo, type ItemCategory, type Item } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type SortKey = "name" | "weight" | "category";
 
-function renderItems(
-  items: Item[],
-  sortKey: SortKey,
-  checklistMode: boolean
-) {
+function renderItems(items: Item[], sortKey: SortKey) {
   if (sortKey === "category") {
-    const map = new Map<ItemCategory, typeof items>();
+    const map = new Map<ItemCategory, Item[]>();
     for (const item of items) {
       const list = map.get(item.category) || [];
       list.push(item);
@@ -39,7 +35,7 @@ function renderItems(
               </h3>
               <div className="space-y-2">
                 {catItems.map((item) => (
-                  <ItemRow key={item.id} item={item} checklistMode={checklistMode} />
+                  <ItemRow key={item.id} item={item} />
                 ))}
               </div>
             </div>
@@ -51,7 +47,7 @@ function renderItems(
   return (
     <div className="space-y-2">
       {items.map((item) => (
-        <ItemRow key={item.id} item={item} checklistMode={checklistMode} />
+        <ItemRow key={item.id} item={item} />
       ))}
     </div>
   );
@@ -62,16 +58,14 @@ const BagDetail = () => {
   const navigate = useNavigate();
   const { data: bag } = useBag(id!);
   const { data: items = [] } = useItems(id!);
-  const [checklistMode, setChecklistMode] = useState(false);
   const [filterCategory, setFilterCategory] = useState<ItemCategory | "all">("all");
   const [sortKey, setSortKey] = useState<SortKey>("category");
-  const [missingOpen, setMissingOpen] = useState(false);
+  const [missingOpen, setMissingOpen] = useState(true);
   const [presentOpen, setPresentOpen] = useState(false);
   const [editBagOpen, setEditBagOpen] = useState(false);
 
   const presentItems = items.filter((i) => i.checked);
   const totalWeight = (bag?.bagWeight || 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
-  const checkedCount = presentItems.length;
 
   const usedCategories = useMemo(() => {
     const cats = new Set(items.map((i) => i.category));
@@ -119,18 +113,7 @@ const BagDetail = () => {
               <Pencil className="h-4 w-4" />
             </Button>
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant={checklistMode ? "default" : "outline"}
-              size="sm"
-              className="gap-2"
-              onClick={() => setChecklistMode(!checklistMode)}
-            >
-              {checklistMode ? <ClipboardCheck className="h-4 w-4" /> : <List className="h-4 w-4" />}
-              {checklistMode ? "Checklist ON" : "Checklist"}
-            </Button>
-            <HamburgerMenu />
-          </div>
+          <HamburgerMenu />
         </div>
       </header>
 
@@ -141,7 +124,7 @@ const BagDetail = () => {
           <div className="flex justify-between text-xs font-mono text-muted-foreground">
             <span>{items.length} oggetti</span>
             <span className={cn(allPresent && "text-success")}>
-              ✓ {checkedCount}/{items.length} presenti
+              ✓ {presentItems.length}/{items.length} presenti
             </span>
           </div>
         </div>
@@ -189,9 +172,8 @@ const BagDetail = () => {
           <div className="rounded-lg border border-dashed p-8 text-center">
             <p className="text-muted-foreground text-sm">Nessun oggetto nello zaino</p>
           </div>
-        ) : checklistMode ? (
+        ) : (
           <div className="space-y-4">
-            {/* Banner zaino completo */}
             {allPresent && (
               <div className="rounded-lg border border-success/30 bg-success/10 p-4 flex items-center gap-3">
                 <CheckCircle2 className="h-5 w-5 text-success" />
@@ -210,7 +192,7 @@ const BagDetail = () => {
                 {missing.length === 0 ? (
                   <p className="text-xs text-muted-foreground pl-6">Nessun oggetto mancante</p>
                 ) : (
-                  renderItems(missing, sortKey, checklistMode)
+                  renderItems(missing, sortKey)
                 )}
               </CollapsibleContent>
             </Collapsible>
@@ -226,14 +208,11 @@ const BagDetail = () => {
                 {present.length === 0 ? (
                   <p className="text-xs text-muted-foreground pl-6">Nessun oggetto presente</p>
                 ) : (
-                  renderItems(present, sortKey, checklistMode)
+                  renderItems(present, sortKey)
                 )}
               </CollapsibleContent>
             </Collapsible>
           </div>
-        ) : (
-          // Normal mode — flat or grouped
-          renderItems(sorted, sortKey, checklistMode)
         )}
       </main>
       <EditBagDialog bag={bag} open={editBagOpen} onOpenChange={setEditBagOpen} />

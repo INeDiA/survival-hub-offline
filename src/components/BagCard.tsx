@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { WeightProgress } from "@/components/WeightProgress";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Trash2, ChevronRight } from "lucide-react";
 import { useDeleteBag } from "@/hooks/use-bags";
 import { useItems } from "@/hooks/use-items";
@@ -26,12 +27,30 @@ export function BagCard({ bag }: BagCardProps) {
         <div className="flex items-start justify-between">
           <CardTitle className="text-lg font-mono">{bag.name}</CardTitle>
           <div className="flex gap-1">
-            <Button
-              variant="ghost" size="icon" className="h-7 w-7 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive"
-              onClick={(e) => { e.stopPropagation(); deleteBag.mutate(bag.id); }}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="ghost" size="icon" className="h-7 w-7 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Eliminare "{bag.name}"?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Tutti gli oggetti al suo interno verranno eliminati. Questa azione non può essere annullata.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Annulla</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => deleteBag.mutate(bag.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                    Elimina
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <ChevronRight className="h-5 w-5 text-muted-foreground" />
           </div>
         </div>

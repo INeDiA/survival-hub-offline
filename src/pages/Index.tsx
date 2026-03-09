@@ -28,8 +28,7 @@ const Index = () => {
             <h1 className="text-lg font-mono font-bold tracking-tight">BugOut Manager</h1>
           </div>
           <div className="flex items-center gap-2">
-            <ExportImportDialog />
-            <ThemeToggle />
+            <HamburgerMenu />
           </div>
         </div>
       </header>

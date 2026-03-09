@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 import { useSaveBag } from "@/hooks/use-bags";
 import type { Bag } from "@/lib/types";
+import { useWeightUnit } from "@/hooks/use-weight-unit";
 
 export function AddBagDialog() {
   const [open, setOpen] = useState(false);

@@ -10,7 +10,10 @@ import { Package, AlertTriangle } from "lucide-react";
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();
   const { data: allItems = [] } = useAllItems();
-  const { formatWeight } = useWeightUnit();
+
+  const formatWeight = (g: number) => {
+    return `${(g / 1000).toFixed(2)} kg`;
+  };
 
   const totalItems = allItems.length;
   const totalWeight = allItems.reduce((s, i) => s + i.weight * i.quantity, 0);

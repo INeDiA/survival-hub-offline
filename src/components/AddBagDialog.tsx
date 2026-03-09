@@ -32,7 +32,7 @@ export function AddBagDialog() {
         setOpen(false);
         setName("");
         setDescription("");
-        setWeightLimit("15000");
+        setWeightLimit("15");
       },
     });
   };

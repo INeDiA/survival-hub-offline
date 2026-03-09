@@ -5,12 +5,13 @@ import { BagCard } from "@/components/BagCard";
 import { AddBagDialog } from "@/components/AddBagDialog";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { getExpiringItems } from "@/components/ExpiryBadge";
-import { Package, AlertTriangle, ChevronRight } from "lucide-react";
+import { Package, AlertTriangle, ChevronRight, X } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { differenceInDays, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/hooks/use-language";
 import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
+import { useStoragePersist } from "@/hooks/use-storage-persist";
 
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();
@@ -18,6 +19,7 @@ const Index = () => {
   const [expiryOpen, setExpiryOpen] = useState(false);
   const { t } = useLanguage();
   const { formatWeight } = useWeightUnit();
+  const { state: persistState, dismissed: persistDismissed, dismiss: dismissPersist } = useStoragePersist();
 
   const presentItems = allItems.filter((i) => i.checked);
   const totalWeight = bags.reduce((s, b) => s + (b.bagWeight || 0), 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
@@ -38,6 +40,15 @@ const Index = () => {
       </header>
 
       <main className="container py-6 space-y-6">
+        {persistState === "denied" && !persistDismissed && (
+          <div className="flex items-start gap-3 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+            <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+            <p className="flex-1">{t.storageDenied}</p>
+            <button onClick={dismissPersist} className="shrink-0 p-0.5 rounded hover:bg-destructive/20">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
         <Collapsible open={expiryOpen} onOpenChange={setExpiryOpen}>
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-lg border bg-card p-3">

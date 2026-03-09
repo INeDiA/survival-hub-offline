@@ -105,6 +105,8 @@ const translations = {
     importError: "Invalid or corrupted file",
     language: "Language",
     lbsLabel: "Lbs",
+    storageDenied: "Your browser may delete app data under storage pressure. Export a backup regularly to avoid data loss.",
+    storageDismiss: "Got it",
     
     // Expiry badge
     expired: "Expired",
@@ -202,6 +204,8 @@ const translations = {
     importError: "File non valido o corrotto",
     language: "Lingua",
     lbsLabel: "Libbre",
+    storageDenied: "Il browser potrebbe cancellare i dati dell'app in caso di spazio insufficiente. Esporta un backup regolarmente per evitare perdite di dati.",
+    storageDismiss: "Ho capito",
     expired: "Scaduto",
     pageNotFound: "Oops! Pagina non trovata",
     returnHome: "Torna alla Home",

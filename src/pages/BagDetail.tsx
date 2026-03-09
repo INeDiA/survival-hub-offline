@@ -141,7 +141,7 @@ const BagDetail = () => {
                 <SelectItem value="weight">Peso ↓</SelectItem>
               </SelectContent>
             </Select>
-            <AddItemDialog bagId={id!} />
+            <AddItemDropdown bagId={id!} />
           </div>
         </div>
 

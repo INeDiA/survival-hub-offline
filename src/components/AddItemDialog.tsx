@@ -41,7 +41,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
 
   const reset = () => {
     setName("");
-    setCategory("other");
+    setCategory("accessories");
     setWeight("0");
     setWeightUnit("kg");
     setQuantity("1");

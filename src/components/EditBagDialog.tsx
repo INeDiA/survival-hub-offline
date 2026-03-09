@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSaveBag } from "@/hooks/use-bags";
 import type { Bag } from "@/lib/types";
+import { useLanguage } from "@/hooks/use-language";
 
 interface EditBagDialogProps {
   bag: Bag;
@@ -21,6 +22,7 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
   const [bagWeight, setBagWeight] = useState(String((bag.bagWeight || 0) / 1000));
   const [unit, setUnit] = useState<"kg" | "g">("kg");
   const saveBag = useSaveBag();
+  const { t } = useLanguage();
 
   const toGrams = (v: number) => unit === "kg" ? Math.round(v * 1000) : v;
 
@@ -51,19 +53,19 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Modifica Zaino</DialogTitle>
+          <DialogTitle>{t.editBag}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label>Nome</Label>
+            <Label>{t.name}</Label>
             <Input value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div>
-            <Label>Descrizione</Label>
+            <Label>{t.description}</Label>
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
           </div>
           <div>
-            <Label>Unità</Label>
+            <Label>{t.unit}</Label>
             <Select value={unit} onValueChange={(v) => setUnit(v as "kg" | "g")}>
               <SelectTrigger className="w-24"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -74,16 +76,16 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Limite peso ({unit})</Label>
+              <Label>{t.weightLimit} ({unit})</Label>
               <Input type="number" step={unit === "kg" ? "0.1" : "1"} value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
             </div>
             <div>
-              <Label>Peso zaino ({unit})</Label>
+              <Label>{t.bagWeight} ({unit})</Label>
               <Input type="number" step={unit === "kg" ? "0.01" : "1"} value={bagWeight} onChange={(e) => setBagWeight(e.target.value)} />
             </div>
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>
-            Salva Modifiche
+            {t.saveChanges}
           </Button>
         </div>
       </DialogContent>

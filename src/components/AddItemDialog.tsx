@@ -12,8 +12,8 @@ import { CalendarIcon, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useSaveItem } from "@/hooks/use-items";
-import { CATEGORIES, type Item, type ItemCategory } from "@/lib/types";
-import { Select as UnitSelect } from "@/components/ui/select";
+import { type Item, type ItemCategory } from "@/lib/types";
+import { useLanguage, useTranslatedCategories } from "@/hooks/use-language";
 
 interface AddItemDialogProps {
   bagId: string;
@@ -34,6 +34,8 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
   const [notes, setNotes] = useState("");
   const [alreadyInBag, setAlreadyInBag] = useState(false);
   const saveItem = useSaveItem();
+  const { t } = useLanguage();
+  const categories = useTranslatedCategories();
 
   const toGrams = (v: number) => weightUnit === "kg" ? Math.round(v * 1000) : v;
 
@@ -74,27 +76,27 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
       {controlledOpen === undefined && (
         <DialogTrigger asChild>
           <Button variant="outline" size="sm" className="gap-2">
-            <Plus className="h-4 w-4" /> Aggiungi Oggetto
+            <Plus className="h-4 w-4" /> {t.addItem}
           </Button>
         </DialogTrigger>
       )}
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Aggiungi Oggetto</DialogTitle>
+          <DialogTitle>{t.addItem}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label>Nome</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Bottiglia d'acqua 1L" />
+            <Label>{t.name}</Label>
+            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t.itemNamePlaceholder} />
           </div>
           <div>
-            <Label>Categoria</Label>
+            <Label>{t.category}</Label>
             <Select value={category} onValueChange={(v) => setCategory(v as ItemCategory)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {CATEGORIES.map((c) => (
+                {categories.map((c) => (
                   <SelectItem key={c.value} value={c.value}>
                     {c.icon} {c.label}
                   </SelectItem>
@@ -104,7 +106,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Peso</Label>
+              <Label>{t.weight}</Label>
               <div className="flex gap-2">
                 <Input type="number" step={weightUnit === "kg" ? "0.01" : "1"} value={weight} onChange={(e) => setWeight(e.target.value)} className="flex-1" />
                 <Select value={weightUnit} onValueChange={(v) => setWeightUnit(v as "kg" | "g")}>
@@ -117,12 +119,12 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
               </div>
             </div>
             <div>
-              <Label>Quantità</Label>
+              <Label>{t.quantity}</Label>
               <Input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
             </div>
           </div>
           <div>
-            <Label>Scadenza (opzionale)</Label>
+            <Label>{t.expiryOptional}</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -130,7 +132,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
                   className={cn("w-full justify-start text-left font-normal", !expiryDate && "text-muted-foreground")}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {expiryDate ? format(expiryDate, "dd/MM/yyyy") : "Seleziona data"}
+                  {expiryDate ? format(expiryDate, "dd/MM/yyyy") : t.selectDate}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
@@ -139,15 +141,15 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
             </Popover>
           </div>
           <div>
-            <Label>Note</Label>
-            <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Note aggiuntive..." />
+            <Label>{t.notes}</Label>
+            <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t.notesPlaceholder} />
           </div>
           <div className="flex items-center gap-3">
             <Switch checked={alreadyInBag} onCheckedChange={setAlreadyInBag} id="already-in-bag" />
-            <Label htmlFor="already-in-bag" className="text-sm cursor-pointer">Già nello zaino</Label>
+            <Label htmlFor="already-in-bag" className="text-sm cursor-pointer">{t.alreadyInBag}</Label>
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>
-            Aggiungi
+            {t.add}
           </Button>
         </div>
       </DialogContent>

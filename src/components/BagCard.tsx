@@ -8,6 +8,7 @@ import { useDeleteBag } from "@/hooks/use-bags";
 import { useItems } from "@/hooks/use-items";
 import type { Bag } from "@/lib/types";
 import { getExpiringItems } from "@/components/ExpiryBadge";
+import { useLanguage } from "@/hooks/use-language";
 
 interface BagCardProps {
   bag: Bag;
@@ -20,6 +21,7 @@ export function BagCard({ bag }: BagCardProps) {
   const presentItems = items.filter((i) => i.checked);
   const totalWeight = (bag.bagWeight || 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
   const expiring = getExpiringItems(items);
+  const { t } = useLanguage();
 
   return (
     <Card className="group cursor-pointer transition-colors hover:border-primary/40" onClick={() => navigate(`/bag/${bag.id}`)}>
@@ -38,15 +40,15 @@ export function BagCard({ bag }: BagCardProps) {
               </AlertDialogTrigger>
               <AlertDialogContent onClick={(e) => e.stopPropagation()}>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Eliminare "{bag.name}"?</AlertDialogTitle>
+                  <AlertDialogTitle>{t.deleteBagTitle(bag.name)}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Tutti gli oggetti al suo interno verranno eliminati. Questa azione non può essere annullata.
+                    {t.deleteBagDesc}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Annulla</AlertDialogCancel>
+                  <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
                   <AlertDialogAction onClick={() => deleteBag.mutate(bag.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                    Elimina
+                    {t.delete}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -61,9 +63,9 @@ export function BagCard({ bag }: BagCardProps) {
       <CardContent className="space-y-2">
         <WeightProgress currentWeight={totalWeight} weightLimit={bag.weightLimit} />
         <div className="flex justify-between text-xs text-muted-foreground font-mono">
-          <span>{items.length} oggetti</span>
+          <span>{items.length} {t.items}</span>
           {expiring.length > 0 && (
-            <span className="text-warning">⚠ {expiring.length} in scadenza</span>
+            <span className="text-warning">⚠ {expiring.length} {t.inExpiry}</span>
           )}
         </div>
       </CardContent>

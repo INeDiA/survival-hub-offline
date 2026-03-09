@@ -11,12 +11,24 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, ChevronRight, Pencil } from "lucide-react";
-import { CATEGORIES, getCategoryInfo, type ItemCategory, type Item } from "@/lib/types";
+import { type ItemCategory, type Item } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useLanguage, useTranslatedCategories, useCategoryLabel } from "@/hooks/use-language";
 
 type SortKey = "name" | "weight" | "category";
 
-function renderItems(items: Item[], sortKey: SortKey) {
+function CategoryHeader({ category }: { category: string }) {
+  const label = useCategoryLabel(category);
+  const cats = useTranslatedCategories();
+  const info = cats.find((c) => c.value === category);
+  return (
+    <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
+      {info?.icon} {label}
+    </h3>
+  );
+}
+
+function RenderItems({ items, sortKey }: { items: Item[]; sortKey: SortKey }) {
   if (sortKey === "category") {
     const map = new Map<ItemCategory, Item[]>();
     for (const item of items) {
@@ -26,21 +38,16 @@ function renderItems(items: Item[], sortKey: SortKey) {
     }
     return (
       <div className="space-y-4">
-        {Array.from(map.entries()).map(([cat, catItems]) => {
-          const info = getCategoryInfo(cat);
-          return (
-            <div key={cat}>
-              <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
-                {info.icon} {info.label}
-              </h3>
-              <div className="space-y-2">
-                {catItems.map((item) => (
-                  <ItemRow key={item.id} item={item} />
-                ))}
-              </div>
+        {Array.from(map.entries()).map(([cat, catItems]) => (
+          <div key={cat}>
+            <CategoryHeader category={cat} />
+            <div className="space-y-2">
+              {catItems.map((item) => (
+                <ItemRow key={item.id} item={item} />
+              ))}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     );
   }
@@ -63,14 +70,16 @@ const BagDetail = () => {
   const [missingOpen, setMissingOpen] = useState(false);
   const [presentOpen, setPresentOpen] = useState(true);
   const [editBagOpen, setEditBagOpen] = useState(false);
+  const { t } = useLanguage();
+  const translatedCategories = useTranslatedCategories();
 
   const presentItems = items.filter((i) => i.checked);
   const totalWeight = (bag?.bagWeight || 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
 
   const usedCategories = useMemo(() => {
     const cats = new Set(items.map((i) => i.category));
-    return CATEGORIES.filter((c) => cats.has(c.value));
-  }, [items]);
+    return translatedCategories.filter((c) => cats.has(c.value));
+  }, [items, translatedCategories]);
 
   const filtered = filterCategory === "all"
     ? items
@@ -91,11 +100,10 @@ const BagDetail = () => {
   const missing = useMemo(() => sorted.filter((i) => !i.checked), [sorted]);
   const present = useMemo(() => sorted.filter((i) => i.checked), [sorted]);
 
-
   if (!bag) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Caricamento...</p>
+        <p className="text-muted-foreground">{t.loading}</p>
       </div>
     );
   }
@@ -118,28 +126,26 @@ const BagDetail = () => {
       </header>
 
       <main className="container py-6 space-y-6">
-        {/* Weight & stats */}
         <div className="rounded-lg border bg-card p-4 space-y-3">
           <WeightProgress currentWeight={totalWeight} weightLimit={bag.weightLimit} />
           <div className="flex justify-between text-xs font-mono text-muted-foreground">
-            <span>{items.length} oggetti</span>
+            <span>{items.length} {t.items}</span>
             <span className={cn(missing.length === 0 && items.length > 0 && "text-success")}>
-              ✓ {presentItems.length}/{items.length} presenti
+              ✓ {presentItems.length}/{items.length} {t.present}
             </span>
           </div>
         </div>
 
-        {/* Toolbar */}
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-2">
             <Select value={sortKey} onValueChange={(v) => setSortKey(v as SortKey)}>
               <SelectTrigger className="w-[130px] h-8 text-xs">
-                <SelectValue placeholder="Ordina per" />
+                <SelectValue placeholder={t.sortBy} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="category">Categoria</SelectItem>
-                <SelectItem value="name">Nome</SelectItem>
-                <SelectItem value="weight">Peso ↓</SelectItem>
+                <SelectItem value="category">{t.category}</SelectItem>
+                <SelectItem value="name">{t.nameSort}</SelectItem>
+                <SelectItem value="weight">{t.weightSort}</SelectItem>
               </SelectContent>
             </Select>
             <AddItemDropdown bagId={id!} />
@@ -152,7 +158,7 @@ const BagDetail = () => {
                 className="text-xs"
                 onClick={() => setFilterCategory("all")}
               >
-                Tutti
+                {t.all}
               </Button>
               {usedCategories.map((c) => (
                 <Button
@@ -169,39 +175,36 @@ const BagDetail = () => {
           )}
         </div>
 
-        {/* Items */}
         {items.length === 0 ? (
           <div className="rounded-lg border border-dashed p-8 text-center">
-            <p className="text-muted-foreground text-sm">Nessun oggetto nello zaino</p>
+            <p className="text-muted-foreground text-sm">{t.noItemsInBag}</p>
           </div>
         ) : (
           <div className="space-y-4">
-            {/* Da aggiungere — hidden when empty */}
             {missing.length > 0 && (
               <Collapsible open={missingOpen} onOpenChange={setMissingOpen}>
                 <CollapsibleTrigger className="flex items-center gap-2 w-full rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors">
                   <ChevronRight className={cn("h-4 w-4 transition-transform", missingOpen && "rotate-90")} />
-                  <span className="text-sm font-mono font-semibold">⬜ Da aggiungere</span>
+                  <span className="text-sm font-mono font-semibold">{t.toAdd}</span>
                   <span className="ml-auto text-xs font-mono text-muted-foreground">{missing.length}</span>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="pt-3">
-                  {renderItems(missing, sortKey)}
+                  <RenderItems items={missing} sortKey={sortKey} />
                 </CollapsibleContent>
               </Collapsible>
             )}
 
-            {/* Nello zaino */}
             <Collapsible open={presentOpen} onOpenChange={setPresentOpen}>
               <CollapsibleTrigger className="flex items-center gap-2 w-full rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors">
                 <ChevronRight className={cn("h-4 w-4 transition-transform", presentOpen && "rotate-90")} />
-                <span className="text-sm font-mono font-semibold">📦 Nello zaino</span>
+                <span className="text-sm font-mono font-semibold">{t.inBag}</span>
                 <span className="ml-auto text-xs font-mono text-muted-foreground">{present.length}</span>
               </CollapsibleTrigger>
               <CollapsibleContent className="pt-3">
                 {present.length === 0 ? (
-                  <p className="text-xs text-muted-foreground pl-6">Nessun oggetto presente</p>
+                  <p className="text-xs text-muted-foreground pl-6">{t.noItemsPresent}</p>
                 ) : (
-                  renderItems(present, sortKey)
+                  <RenderItems items={present} sortKey={sortKey} />
                 )}
               </CollapsibleContent>
             </Collapsible>

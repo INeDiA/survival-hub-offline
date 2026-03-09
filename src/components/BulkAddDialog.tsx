@@ -62,6 +62,10 @@ export function BulkAddDialog({ bagId, open, onOpenChange }: BulkAddDialogProps)
               {lines.length} oggett{lines.length === 1 ? "o" : "i"} da aggiungere
             </p>
           )}
+          <div className="flex items-center gap-3">
+            <Switch checked={alreadyInBag} onCheckedChange={setAlreadyInBag} id="bulk-already-in-bag" />
+            <Label htmlFor="bulk-already-in-bag" className="text-sm cursor-pointer">Già nello zaino</Label>
+          </div>
           <Button onClick={handleSubmit} className="w-full" disabled={lines.length === 0}>
             Aggiungi {lines.length > 0 ? lines.length : ""} oggett{lines.length === 1 ? "o" : "i"}
           </Button>

@@ -2,8 +2,7 @@ import { useBags } from "@/hooks/use-bags";
 import { useAllItems } from "@/hooks/use-items";
 import { BagCard } from "@/components/BagCard";
 import { AddBagDialog } from "@/components/AddBagDialog";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { ExportImportDialog } from "@/components/ExportImportDialog";
+import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { getExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle } from "lucide-react";
 
@@ -29,8 +28,7 @@ const Index = () => {
             <h1 className="text-lg font-mono font-bold tracking-tight">BugOut Manager</h1>
           </div>
           <div className="flex items-center gap-2">
-            <ExportImportDialog />
-            <ThemeToggle />
+            <HamburgerMenu />
           </div>
         </div>
       </header>

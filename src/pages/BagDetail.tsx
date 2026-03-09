@@ -5,11 +5,14 @@ import { useItems } from "@/hooks/use-items";
 import { AddItemDialog } from "@/components/AddItemDialog";
 import { ItemRow } from "@/components/ItemRow";
 import { WeightProgress } from "@/components/WeightProgress";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, ClipboardCheck, List } from "lucide-react";
 import { CATEGORIES, getCategoryInfo, type ItemCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+type SortKey = "name" | "weight" | "category";
 
 const BagDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +21,7 @@ const BagDetail = () => {
   const { data: items = [] } = useItems(id!);
   const [checklistMode, setChecklistMode] = useState(false);
   const [filterCategory, setFilterCategory] = useState<ItemCategory | "all">("all");
+  const [sortKey, setSortKey] = useState<SortKey>("category");
 
   const totalWeight = items.reduce((s, i) => s + i.weight * i.quantity, 0);
   const checkedCount = items.filter((i) => i.checked).length;
@@ -31,16 +35,30 @@ const BagDetail = () => {
     ? items
     : items.filter((i) => i.category === filterCategory);
 
-  // Group by category
+  const sorted = useMemo(() => {
+    const copy = [...filtered];
+    switch (sortKey) {
+      case "name":
+        return copy.sort((a, b) => a.name.localeCompare(b.name));
+      case "weight":
+        return copy.sort((a, b) => b.weight * b.quantity - a.weight * a.quantity);
+      case "category":
+      default:
+        return copy;
+    }
+  }, [filtered, sortKey]);
+
+  // Group by category (only used when sorting by category)
   const grouped = useMemo(() => {
+    if (sortKey !== "category") return null;
     const map = new Map<ItemCategory, typeof items>();
-    for (const item of filtered) {
+    for (const item of sorted) {
       const list = map.get(item.category) || [];
       list.push(item);
       map.set(item.category, list);
     }
     return map;
-  }, [filtered]);
+  }, [sorted, sortKey]);
 
   if (!bag) {
     return (
@@ -70,7 +88,7 @@ const BagDetail = () => {
               {checklistMode ? <ClipboardCheck className="h-4 w-4" /> : <List className="h-4 w-4" />}
               {checklistMode ? "Checklist ON" : "Checklist"}
             </Button>
-            <ThemeToggle />
+            <HamburgerMenu />
           </div>
         </div>
       </header>
@@ -91,7 +109,7 @@ const BagDetail = () => {
 
         {/* Toolbar */}
         <div className="flex items-center justify-between gap-2 flex-wrap">
-          <div className="flex gap-1 flex-wrap">
+          <div className="flex gap-1 flex-wrap items-center">
             <Button
               variant={filterCategory === "all" ? "secondary" : "ghost"}
               size="sm"
@@ -112,15 +130,27 @@ const BagDetail = () => {
               </Button>
             ))}
           </div>
-          <AddItemDialog bagId={id!} />
+          <div className="flex items-center gap-2">
+            <Select value={sortKey} onValueChange={(v) => setSortKey(v as SortKey)}>
+              <SelectTrigger className="w-[130px] h-8 text-xs">
+                <SelectValue placeholder="Ordina per" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="category">Categoria</SelectItem>
+                <SelectItem value="name">Nome</SelectItem>
+                <SelectItem value="weight">Peso ↓</SelectItem>
+              </SelectContent>
+            </Select>
+            <AddItemDialog bagId={id!} />
+          </div>
         </div>
 
-        {/* Items grouped by category */}
+        {/* Items */}
         {items.length === 0 ? (
           <div className="rounded-lg border border-dashed p-8 text-center">
             <p className="text-muted-foreground text-sm">Nessun oggetto nello zaino</p>
           </div>
-        ) : (
+        ) : grouped ? (
           <div className="space-y-4">
             {Array.from(grouped.entries()).map(([cat, catItems]) => {
               const info = getCategoryInfo(cat);
@@ -137,6 +167,12 @@ const BagDetail = () => {
                 </div>
               );
             })}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {sorted.map((item) => (
+              <ItemRow key={item.id} item={item} checklistMode={checklistMode} />
+            ))}
           </div>
         )}
       </main>

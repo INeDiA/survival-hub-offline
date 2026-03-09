@@ -21,12 +21,11 @@ interface EditItemDialogProps {
 
 export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps) {
   const [weightUnit, setWeightUnit] = useState<"kg" | "g">("kg");
-  const fromGrams = (g: number) => weightUnit === "kg" ? g / 1000 : g;
   const toGrams = (v: number) => weightUnit === "kg" ? Math.round(v * 1000) : v;
 
   const [name, setName] = useState(item.name);
   const [category, setCategory] = useState<ItemCategory>(item.category);
-  const [weight, setWeight] = useState(String(fromGrams(item.weight)));
+  const [weight, setWeight] = useState(String(item.weight / 1000));
   const [quantity, setQuantity] = useState(String(item.quantity));
   const [expiryDate, setExpiryDate] = useState<Date | undefined>(
     item.expiryDate ? new Date(item.expiryDate) : undefined
@@ -37,11 +36,12 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
   useEffect(() => {
     setName(item.name);
     setCategory(item.category);
-    setWeight(String(fromGrams(item.weight)));
+    setWeightUnit("kg");
+    setWeight(String(item.weight / 1000));
     setQuantity(String(item.quantity));
     setExpiryDate(item.expiryDate ? new Date(item.expiryDate) : undefined);
     setNotes(item.notes);
-  }, [item, fromGrams]);
+  }, [item]);
 
   const handleSubmit = () => {
     if (!name.trim()) return;

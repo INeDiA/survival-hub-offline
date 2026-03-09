@@ -9,7 +9,7 @@ interface WeightProgressProps {
 }
 
 export function WeightProgress({ currentWeight, weightLimit, className }: WeightProgressProps) {
-  const { formatWeight } = useWeightUnit();
+  const formatWeight = (g: number) => `${(g / 1000).toFixed(2)} kg`;
   const percentage = weightLimit > 0 ? Math.min((currentWeight / weightLimit) * 100, 100) : 0;
   const isOver = currentWeight > weightLimit;
   const isWarning = percentage > 80 && !isOver;

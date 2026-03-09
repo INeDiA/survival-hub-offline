@@ -70,7 +70,6 @@ const BagDetail = () => {
               {checklistMode ? <ClipboardCheck className="h-4 w-4" /> : <List className="h-4 w-4" />}
               {checklistMode ? "Checklist ON" : "Checklist"}
             </Button>
-            <WeightUnitToggle />
             <ThemeToggle />
           </div>
         </div>

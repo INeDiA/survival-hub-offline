@@ -130,29 +130,8 @@ const BagDetail = () => {
         </div>
 
         {/* Toolbar */}
-        <div className="flex items-center justify-between gap-2 flex-wrap">
-          <div className="flex gap-1 flex-wrap items-center">
-            <Button
-              variant={filterCategory === "all" ? "secondary" : "ghost"}
-              size="sm"
-              className="text-xs"
-              onClick={() => setFilterCategory("all")}
-            >
-              Tutti
-            </Button>
-            {usedCategories.map((c) => (
-              <Button
-                key={c.value}
-                variant={filterCategory === c.value ? "secondary" : "ghost"}
-                size="sm"
-                className="text-xs gap-1"
-                onClick={() => setFilterCategory(c.value)}
-              >
-                {c.icon} {c.label}
-              </Button>
-            ))}
-          </div>
-          <div className="flex items-center gap-2">
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-2">
             <Select value={sortKey} onValueChange={(v) => setSortKey(v as SortKey)}>
               <SelectTrigger className="w-[130px] h-8 text-xs">
                 <SelectValue placeholder="Ordina per" />
@@ -165,6 +144,29 @@ const BagDetail = () => {
             </Select>
             <AddItemDropdown bagId={id!} />
           </div>
+          {usedCategories.length > 0 && (
+            <div className="flex gap-1 flex-wrap items-center">
+              <Button
+                variant={filterCategory === "all" ? "secondary" : "ghost"}
+                size="sm"
+                className="text-xs"
+                onClick={() => setFilterCategory("all")}
+              >
+                Tutti
+              </Button>
+              {usedCategories.map((c) => (
+                <Button
+                  key={c.value}
+                  variant={filterCategory === c.value ? "secondary" : "ghost"}
+                  size="sm"
+                  className="text-xs gap-1"
+                  onClick={() => setFilterCategory(c.value)}
+                >
+                  {c.icon} {c.label}
+                </Button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Items */}

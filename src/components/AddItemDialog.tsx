@@ -31,6 +31,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
   const [quantity, setQuantity] = useState("1");
   const [expiryDate, setExpiryDate] = useState<Date | undefined>();
   const [notes, setNotes] = useState("");
+  const [alreadyInBag, setAlreadyInBag] = useState(false);
   const saveItem = useSaveItem();
 
   const toGrams = (v: number) => weightUnit === "kg" ? Math.round(v * 1000) : v;

@@ -108,6 +108,12 @@ const translations = {
     storageDenied: "Your browser may delete app data under storage pressure. Export a backup regularly to avoid data loss.",
     storageDismiss: "Got it",
     
+    // PWA install
+    installApp: "Install App",
+    installDesc: "Install BugOut Manager for quick access and offline use.",
+    installButton: "Install",
+    iosInstallGuide: "To install: tap the Share button, then \"Add to Home Screen\".",
+    
     // Expiry badge
     expired: "Expired",
     
@@ -206,6 +212,10 @@ const translations = {
     lbsLabel: "Libbre",
     storageDenied: "Il browser potrebbe cancellare i dati dell'app in caso di spazio insufficiente. Esporta un backup regolarmente per evitare perdite di dati.",
     storageDismiss: "Ho capito",
+    installApp: "Installa App",
+    installDesc: "Installa BugOut Manager per accesso rapido e utilizzo offline.",
+    installButton: "Installa",
+    iosInstallGuide: "Per installare: tocca il pulsante Condividi, poi \"Aggiungi a schermata Home\".",
     expired: "Scaduto",
     pageNotFound: "Oops! Pagina non trovata",
     returnHome: "Torna alla Home",

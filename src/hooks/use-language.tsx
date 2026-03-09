@@ -208,13 +208,13 @@ const translations = {
     cat_foodWater: "Cibo e acqua",
     cat_hygiene: "Igiene",
     cat_clothing: "Abbigliamento",
-    cat_medicine: "Medicinale",
-    cat_survival: "Sopravvivenza",
+    cat_medicine: "Medicinali",
+    cat_equipment: "Attrezzatura",
     cat_lighting: "Illuminazione",
     cat_tactical: "Tattica",
-    cat_multiuse: "Multiuso",
-    cat_notes: "Appunti",
+    cat_notes: "Appunti & Documenti",
     cat_accessories: "Accessori",
+    cat_other: "Altro",
   },
 } as const;
 

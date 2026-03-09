@@ -118,12 +118,12 @@ const translations = {
     cat_hygiene: "Hygiene",
     cat_clothing: "Clothing",
     cat_medicine: "Medicine",
-    cat_survival: "Survival",
+    cat_equipment: "Equipment",
     cat_lighting: "Lighting",
     cat_tactical: "Tactical",
-    cat_multiuse: "Multi-use",
-    cat_notes: "Notes",
+    cat_notes: "Notes & Documents",
     cat_accessories: "Accessories",
+    cat_other: "Other",
   },
   it: {
     appTitle: "BugOut Manager",
@@ -208,13 +208,13 @@ const translations = {
     cat_foodWater: "Cibo e acqua",
     cat_hygiene: "Igiene",
     cat_clothing: "Abbigliamento",
-    cat_medicine: "Medicinale",
-    cat_survival: "Sopravvivenza",
+    cat_medicine: "Medicinali",
+    cat_equipment: "Attrezzatura",
     cat_lighting: "Illuminazione",
     cat_tactical: "Tattica",
-    cat_multiuse: "Multiuso",
-    cat_notes: "Appunti",
+    cat_notes: "Appunti & Documenti",
     cat_accessories: "Accessori",
+    cat_other: "Altro",
   },
 } as const;
 
@@ -258,12 +258,12 @@ const categoryKeyMap: Record<string, keyof Translations> = {
   hygiene: "cat_hygiene",
   clothing: "cat_clothing",
   medicine: "cat_medicine",
-  survival: "cat_survival",
+  equipment: "cat_equipment",
   lighting: "cat_lighting",
   tactical: "cat_tactical",
-  multiuse: "cat_multiuse",
   notes: "cat_notes",
   accessories: "cat_accessories",
+  other: "cat_other",
 };
 
 export function useCategoryLabel(category: string): string {
@@ -279,11 +279,11 @@ export function useTranslatedCategories() {
     { value: "hygiene" as const, label: t.cat_hygiene, icon: "🧼" },
     { value: "clothing" as const, label: t.cat_clothing, icon: "👕" },
     { value: "medicine" as const, label: t.cat_medicine, icon: "💊" },
-    { value: "survival" as const, label: t.cat_survival, icon: "🏕️" },
+    { value: "equipment" as const, label: t.cat_equipment, icon: "🏕️" },
     { value: "lighting" as const, label: t.cat_lighting, icon: "🔦" },
     { value: "tactical" as const, label: t.cat_tactical, icon: "🎯" },
-    { value: "multiuse" as const, label: t.cat_multiuse, icon: "🔧" },
     { value: "notes" as const, label: t.cat_notes, icon: "📝" },
     { value: "accessories" as const, label: t.cat_accessories, icon: "🎒" },
+    { value: "other" as const, label: t.cat_other, icon: "📦" },
   ];
 }

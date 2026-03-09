@@ -5,7 +5,6 @@ import { Trash2, Pencil, ArrowRightLeft } from "lucide-react";
 import { ExpiryBadge } from "@/components/ExpiryBadge";
 import { getCategoryInfo, type Item } from "@/lib/types";
 import { useSaveItem, useDeleteItem } from "@/hooks/use-items";
-import { useWeightUnit } from "@/hooks/use-weight-unit";
 import { cn } from "@/lib/utils";
 import { EditItemDialog } from "@/components/EditItemDialog";
 import { MoveItemDialog } from "@/components/MoveItemDialog";

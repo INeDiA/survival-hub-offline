@@ -44,6 +44,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
     setQuantity("1");
     setExpiryDate(undefined);
     setNotes("");
+    setAlreadyInBag(false);
   };
 
   const handleSubmit = () => {

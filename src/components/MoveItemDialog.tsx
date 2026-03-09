@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useBags } from "@/hooks/use-bags";
 import { useSaveItem } from "@/hooks/use-items";
 import type { Item } from "@/lib/types";
+import { useLanguage } from "@/hooks/use-language";
 
 interface MoveItemDialogProps {
   item: Item;
@@ -17,6 +18,7 @@ export function MoveItemDialog({ item, open, onOpenChange }: MoveItemDialogProps
   const { data: bags = [] } = useBags();
   const saveItem = useSaveItem();
   const [targetBagId, setTargetBagId] = useState("");
+  const { t } = useLanguage();
 
   const otherBags = bags.filter((b) => b.id !== item.bagId);
 
@@ -32,20 +34,20 @@ export function MoveItemDialog({ item, open, onOpenChange }: MoveItemDialogProps
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Sposta Oggetto</DialogTitle>
+          <DialogTitle>{t.moveItem}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Sposta <strong>{item.name}</strong> in un altro zaino:
+            {t.moveItemTo(item.name)}
           </p>
           {otherBags.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nessun altro zaino disponibile.</p>
+            <p className="text-sm text-muted-foreground">{t.noOtherBags}</p>
           ) : (
             <>
               <div>
-                <Label>Zaino di destinazione</Label>
+                <Label>{t.destinationBag}</Label>
                 <Select value={targetBagId} onValueChange={setTargetBagId}>
-                  <SelectTrigger><SelectValue placeholder="Seleziona zaino" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={t.selectBag} /></SelectTrigger>
                   <SelectContent>
                     {otherBags.map((b) => (
                       <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>
@@ -54,7 +56,7 @@ export function MoveItemDialog({ item, open, onOpenChange }: MoveItemDialogProps
                 </Select>
               </div>
               <Button onClick={handleMove} className="w-full" disabled={!targetBagId}>
-                Sposta
+                {t.move}
               </Button>
             </>
           )}

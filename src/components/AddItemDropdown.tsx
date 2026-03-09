@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Plus, ChevronDown, List } from "lucide-react";
 import { AddItemDialog } from "@/components/AddItemDialog";
 import { BulkAddDialog } from "@/components/BulkAddDialog";
+import { useLanguage } from "@/hooks/use-language";
 
 interface AddItemDropdownProps {
   bagId: string;
@@ -12,12 +13,13 @@ interface AddItemDropdownProps {
 export function AddItemDropdown({ bagId }: AddItemDropdownProps) {
   const [singleOpen, setSingleOpen] = useState(false);
   const [bulkOpen, setBulkOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <>
       <div className="flex">
         <Button variant="outline" size="sm" className="gap-2 rounded-r-none" onClick={() => setSingleOpen(true)}>
-          <Plus className="h-4 w-4" /> Aggiungi
+          <Plus className="h-4 w-4" /> {t.add}
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -27,10 +29,10 @@ export function AddItemDropdown({ bagId }: AddItemDropdownProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => setSingleOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Aggiungi Oggetto
+              <Plus className="mr-2 h-4 w-4" /> {t.addItem}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setBulkOpen(true)}>
-              <List className="mr-2 h-4 w-4" /> Importa Lista
+              <List className="mr-2 h-4 w-4" /> {t.importList}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

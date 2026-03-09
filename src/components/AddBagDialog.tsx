@@ -14,6 +14,7 @@ export function AddBagDialog() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [weightLimit, setWeightLimit] = useState("15");
+  const [bagWeight, setBagWeight] = useState("0");
   const saveBag = useSaveBag();
   const { unit, toGrams } = useWeightUnit();
 
@@ -24,6 +25,7 @@ export function AddBagDialog() {
       name: name.trim(),
       description: description.trim(),
       weightLimit: toGrams(parseFloat(weightLimit) || 15),
+      bagWeight: toGrams(parseFloat(bagWeight) || 0),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -33,6 +35,7 @@ export function AddBagDialog() {
         setName("");
         setDescription("");
         setWeightLimit("15");
+        setBagWeight("0");
       },
     });
   };
@@ -57,9 +60,15 @@ export function AddBagDialog() {
             <Label htmlFor="bag-desc">Descrizione</Label>
             <Textarea id="bag-desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Zaino principale per evacuazione..." />
           </div>
-          <div>
-            <Label htmlFor="bag-weight">Limite peso ({unit})</Label>
-            <Input id="bag-weight" type="number" step={unit === "kg" ? "0.1" : "1"} value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="bag-weight-limit">Limite peso ({unit})</Label>
+              <Input id="bag-weight-limit" type="number" step={unit === "kg" ? "0.1" : "1"} value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
+            </div>
+            <div>
+              <Label htmlFor="bag-weight">Peso zaino ({unit})</Label>
+              <Input id="bag-weight" type="number" step={unit === "kg" ? "0.01" : "1"} value={bagWeight} onChange={(e) => setBagWeight(e.target.value)} />
+            </div>
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>
             Crea Zaino

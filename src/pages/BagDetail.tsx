@@ -6,10 +6,11 @@ import { AddItemDropdown } from "@/components/AddItemDropdown";
 import { ItemRow } from "@/components/ItemRow";
 import { WeightProgress } from "@/components/WeightProgress";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
+import { EditBagDialog } from "@/components/EditBagDialog";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ClipboardCheck, List, ChevronRight, CheckCircle2, Package } from "lucide-react";
+import { ArrowLeft, ClipboardCheck, List, ChevronRight, CheckCircle2, Pencil } from "lucide-react";
 import { CATEGORIES, getCategoryInfo, type ItemCategory, type Item } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -66,9 +67,11 @@ const BagDetail = () => {
   const [sortKey, setSortKey] = useState<SortKey>("category");
   const [missingOpen, setMissingOpen] = useState(false);
   const [presentOpen, setPresentOpen] = useState(false);
+  const [editBagOpen, setEditBagOpen] = useState(false);
 
-  const totalWeight = items.reduce((s, i) => s + i.weight * i.quantity, 0);
-  const checkedCount = items.filter((i) => i.checked).length;
+  const presentItems = items.filter((i) => i.checked);
+  const totalWeight = (bag?.bagWeight || 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
+  const checkedCount = presentItems.length;
 
   const usedCategories = useMemo(() => {
     const cats = new Set(items.map((i) => i.category));
@@ -112,6 +115,9 @@ const BagDetail = () => {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <h1 className="text-lg font-mono font-bold truncate">{bag.name}</h1>
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditBagOpen(true)}>
+              <Pencil className="h-4 w-4" />
+            </Button>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -230,6 +236,7 @@ const BagDetail = () => {
           renderItems(sorted, sortKey, checklistMode)
         )}
       </main>
+      <EditBagDialog bag={bag} open={editBagOpen} onOpenChange={setEditBagOpen} />
     </div>
   );
 };

@@ -54,6 +54,7 @@ export function usePwaInstall() {
   }, []);
 
   const canShow = !dismissed && !isInStandaloneMode() && (!!deferredPrompt || showIosGuide);
+  const canInstall = !isInStandaloneMode() && (!!deferredPrompt || showIosGuide);
 
-  return { canShow, isIos: showIosGuide, install, dismiss };
+  return { canShow, canInstall, isIos: showIosGuide, install, dismiss };
 }

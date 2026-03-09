@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Menu, Download, Upload, Moon, Sun, Globe, Weight } from "lucide-react";
+import { Menu, Download, Upload, Moon, Sun, Globe, Weight, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useTheme } from "@/hooks/use-theme";
 import { useLanguage } from "@/hooks/use-language";
 import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
+import { usePwaInstall } from "@/hooks/use-pwa-install";
 
 export function HamburgerMenu() {
   const [backupOpen, setBackupOpen] = useState(false);
@@ -23,6 +24,7 @@ export function HamburgerMenu() {
   const { theme, toggle } = useTheme();
   const { lang, t, setLang } = useLanguage();
   const { unit, setUnit } = useWeightUnit();
+  const pwa = usePwaInstall();
 
   const nextUnit = unit === "kg" ? "lbs" : "kg";
 
@@ -78,6 +80,18 @@ export function HamburgerMenu() {
             <Download className="mr-2 h-4 w-4" />
             {t.backupRestore}
           </DropdownMenuItem>
+          {pwa.canInstall && !pwa.isIos && (
+            <DropdownMenuItem onClick={pwa.install}>
+              <Smartphone className="mr-2 h-4 w-4" />
+              {t.installApp}
+            </DropdownMenuItem>
+          )}
+          {pwa.canInstall && pwa.isIos && (
+            <DropdownMenuItem disabled className="text-xs opacity-70">
+              <Smartphone className="mr-2 h-4 w-4" />
+              {t.iosInstallGuide}
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

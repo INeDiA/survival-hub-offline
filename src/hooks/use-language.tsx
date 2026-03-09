@@ -64,6 +64,8 @@ const translations = {
     // Item row
     moveToAdd: "Move to 'To add'",
     moveToInBag: "Move to 'In bag'",
+    movedToAdd: "Moved to 'To add'",
+    movedToInBag: "Moved to 'In bag'",
     deleteItemTitle: (name: string) => `Delete "${name}"?`,
     cannotBeUndone: "This action cannot be undone.",
     cancel: "Cancel",

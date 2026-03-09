@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useSaveItem } from "@/hooks/use-items";
 import { CATEGORIES, type Item, type ItemCategory } from "@/lib/types";
+import { useWeightUnit } from "@/hooks/use-weight-unit";
 
 interface AddItemDialogProps {
   bagId: string;

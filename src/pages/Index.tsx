@@ -22,6 +22,7 @@ const Index = () => {
   const { t } = useLanguage();
   const { formatWeight } = useWeightUnit();
   const { state: persistState, dismissed: persistDismissed, dismiss: dismissPersist } = useStoragePersist();
+  const { canShow: showInstall, isIos, install, dismiss: dismissInstall } = usePwaInstall();
 
   const presentItems = allItems.filter((i) => i.checked);
   const totalWeight = bags.reduce((s, b) => s + (b.bagWeight || 0), 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);

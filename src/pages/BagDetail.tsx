@@ -10,7 +10,7 @@ import { EditBagDialog } from "@/components/EditBagDialog";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ChevronRight, CheckCircle2, Pencil } from "lucide-react";
+import { ArrowLeft, ChevronRight, Pencil } from "lucide-react";
 import { CATEGORIES, getCategoryInfo, type ItemCategory, type Item } from "@/lib/types";
 import { cn } from "@/lib/utils";
 

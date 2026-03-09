@@ -107,7 +107,6 @@ export function AddItemDialog({ bagId }: AddItemDialogProps) {
                 </Select>
               </div>
             </div>
-            </div>
             <div>
               <Label>Quantità</Label>
               <Input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} />

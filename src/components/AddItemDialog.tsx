@@ -57,7 +57,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
       weight: toGrams(parseFloat(weight) || 0),
       quantity: parseInt(quantity) || 1,
       expiryDate: expiryDate ? expiryDate.toISOString() : null,
-      checked: false,
+      checked: alreadyInBag,
       notes: notes.trim(),
     };
     saveItem.mutate(item, {

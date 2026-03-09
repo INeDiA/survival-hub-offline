@@ -205,6 +205,7 @@ const translations = {
     importSuccess: (bags: number, items: number) => `Importati ${bags} zaini e ${items} oggetti`,
     importError: "File non valido o corrotto",
     language: "Lingua",
+    lbsLabel: "Libbre",
     expired: "Scaduto",
     pageNotFound: "Oops! Pagina non trovata",
     returnHome: "Torna alla Home",

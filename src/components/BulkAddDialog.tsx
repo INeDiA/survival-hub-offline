@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useSaveItem } from "@/hooks/use-items";
 import type { Item } from "@/lib/types";
+import { useLanguage } from "@/hooks/use-language";
 
 interface BulkAddDialogProps {
   bagId: string;
@@ -17,6 +18,7 @@ export function BulkAddDialog({ bagId, open, onOpenChange }: BulkAddDialogProps)
   const [text, setText] = useState("");
   const [alreadyInBag, setAlreadyInBag] = useState(false);
   const saveItem = useSaveItem();
+  const { t } = useLanguage();
 
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
 
@@ -45,29 +47,29 @@ export function BulkAddDialog({ bagId, open, onOpenChange }: BulkAddDialogProps)
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Importa Lista</DialogTitle>
+          <DialogTitle>{t.importList}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label>Un oggetto per riga</Label>
+            <Label>{t.onePerLine}</Label>
             <Textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder={"Torcia LED\nColtello multiuso\nKit pronto soccorso\nAccendino"}
+              placeholder={t.bulkPlaceholder}
               rows={8}
             />
           </div>
           {lines.length > 0 && (
             <p className="text-xs text-muted-foreground font-mono">
-              {lines.length} oggett{lines.length === 1 ? "o" : "i"} da aggiungere
+              {t.itemsToAdd(lines.length)}
             </p>
           )}
           <div className="flex items-center gap-3">
             <Switch checked={alreadyInBag} onCheckedChange={setAlreadyInBag} id="bulk-already-in-bag" />
-            <Label htmlFor="bulk-already-in-bag" className="text-sm cursor-pointer">Già nello zaino</Label>
+            <Label htmlFor="bulk-already-in-bag" className="text-sm cursor-pointer">{t.alreadyInBag}</Label>
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={lines.length === 0}>
-            Aggiungi {lines.length > 0 ? lines.length : ""} oggett{lines.length === 1 ? "o" : "i"}
+            {t.addItems(lines.length)}
           </Button>
         </div>
       </DialogContent>

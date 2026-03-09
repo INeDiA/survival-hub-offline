@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Pencil, ArrowRightLeft, ArrowUpDown } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ExpiryBadge } from "@/components/ExpiryBadge";
-import { getCategoryInfo, type Item } from "@/lib/types";
+import { type Item } from "@/lib/types";
 import { useSaveItem, useDeleteItem } from "@/hooks/use-items";
 import { cn } from "@/lib/utils";
 import { EditItemDialog } from "@/components/EditItemDialog";
 import { MoveItemDialog } from "@/components/MoveItemDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useLanguage, useCategoryLabel } from "@/hooks/use-language";
 
 interface ItemRowProps {
   item: Item;
@@ -18,9 +19,18 @@ export function ItemRow({ item }: ItemRowProps) {
   const saveItem = useSaveItem();
   const deleteItem = useDeleteItem();
   const formatWeight = (g: number) => `${(g / 1000).toFixed(2)} kg`;
-  const cat = getCategoryInfo(item.category);
+  const catLabel = useCategoryLabel(item.category);
+  const { t } = useLanguage();
   const [editOpen, setEditOpen] = useState(false);
   const [moveOpen, setMoveOpen] = useState(false);
+
+  // Get icon from translated categories
+  const catIcons: Record<string, string> = {
+    water: "💧", food: "🥫", shelter: "⛺", "first-aid": "🏥", fire: "🔥",
+    tools: "🔧", hygiene: "🧼", communication: "📻", documents: "📄",
+    clothing: "👕", lighting: "🔦", navigation: "🧭", defense: "🛡️", other: "📦",
+  };
+  const catIcon = catIcons[item.category] || "📦";
 
   const toggleChecked = () => {
     saveItem.mutate({ ...item, checked: !item.checked });
@@ -32,7 +42,7 @@ export function ItemRow({ item }: ItemRowProps) {
         "flex items-center gap-3 rounded-md border p-3 transition-colors",
         item.checked && "bg-success/10 border-success/30"
       )}>
-        <span className="text-lg" aria-hidden>{cat.icon}</span>
+        <span className="text-lg" aria-hidden>{catIcon}</span>
         <div className="flex-1 min-w-0">
           <div className="font-medium text-sm">
             {item.name}
@@ -61,7 +71,7 @@ export function ItemRow({ item }: ItemRowProps) {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              {item.checked ? "Sposta in 'Da aggiungere'" : "Sposta in 'Nello zaino'"}
+              {item.checked ? t.moveToAdd : t.moveToInBag}
             </TooltipContent>
           </Tooltip>
           <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" onClick={() => setEditOpen(true)}>
@@ -78,15 +88,15 @@ export function ItemRow({ item }: ItemRowProps) {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Eliminare "{item.name}"?</AlertDialogTitle>
+                <AlertDialogTitle>{t.deleteItemTitle(item.name)}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Questa azione non può essere annullata.
+                  {t.cannotBeUndone}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Annulla</AlertDialogCancel>
+                <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
                 <AlertDialogAction onClick={() => deleteItem.mutate(item.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                  Elimina
+                  {t.delete}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

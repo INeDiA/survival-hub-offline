@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ClipboardCheck, List } from "lucide-react";
 import { CATEGORIES, getCategoryInfo, type ItemCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { WeightUnitToggle } from "@/components/WeightUnitToggle";
 
 const BagDetail = () => {
   const { id } = useParams<{ id: string }>();

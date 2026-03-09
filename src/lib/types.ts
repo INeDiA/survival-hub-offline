@@ -3,6 +3,7 @@ export interface Bag {
   name: string;
   description: string;
   weightLimit: number; // grams
+  bagWeight: number; // grams - weight of the bag itself
   createdAt: string;
   updatedAt: string;
 }

@@ -4,7 +4,7 @@ import { useAllItems } from "@/hooks/use-items";
 import { BagCard } from "@/components/BagCard";
 import { AddBagDialog } from "@/components/AddBagDialog";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
-import { getExpiringItems } from "@/components/ExpiryBadge";
+import { useExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle, ChevronRight, X, Download, Share } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { differenceInDays, parseISO } from "date-fns";

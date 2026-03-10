@@ -7,7 +7,7 @@ import { Trash2, ChevronRight } from "lucide-react";
 import { useDeleteBag } from "@/hooks/use-bags";
 import { useItems } from "@/hooks/use-items";
 import type { Bag } from "@/lib/types";
-import { getExpiringItems } from "@/components/ExpiryBadge";
+import { useExpiringItems } from "@/components/ExpiryBadge";
 import { useLanguage } from "@/hooks/use-language";
 
 interface BagCardProps {

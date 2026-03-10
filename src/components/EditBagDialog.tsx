@@ -26,7 +26,6 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
   useEffect(() => {
     setName(bag.name);
     setDescription(bag.description);
-    setUnit("kg");
     setWeightLimit(String(bag.weightLimit / 1000));
     setBagWeight(String((bag.bagWeight || 0) / 1000));
   }, [bag]);

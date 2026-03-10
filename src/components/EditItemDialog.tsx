@@ -41,8 +41,8 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
   useEffect(() => {
     setName(item.name);
     setCategory(item.category);
-    setWeightUnit("kg");
-    setWeight(String(item.weight / 1000));
+    setWeightUnit("g");
+    setWeight(String(item.weight));
     setQuantity(String(item.quantity));
     setExpiryDate(item.expiryDate ? new Date(item.expiryDate) : undefined);
     setNotes(item.notes);

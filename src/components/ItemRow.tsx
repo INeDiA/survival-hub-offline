@@ -30,7 +30,7 @@ export function ItemRow({ item }: ItemRowProps) {
   const catIcons: Record<string, string> = {
     water: "💧", food: "🥫", shelter: "⛺", "first-aid": "🏥", fire: "🔥",
     tools: "🔧", hygiene: "🧼", communication: "📻", documents: "📄",
-    clothing: "👕", lighting: "🔦", navigation: "🧭", defense: "🛡️", other: "📦",
+    clothing: "👕", navigation: "🧭", defense: "🛡️", "comms-radio": "📻", other: "📦",
   };
   const catIcon = catIcons[item.category] || "📦";
 

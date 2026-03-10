@@ -124,15 +124,14 @@ const translations = {
     returnHome: "Return to Home",
     
     // Categories
+    cat_clothing: "Clothing",
+    cat_commsRadio: "Comms & Radio",
     cat_foodWater: "Food & Water",
     cat_hygiene: "Hygiene",
-    cat_clothing: "Clothing",
     cat_medicine: "Medicine",
     cat_equipment: "Equipment",
-    cat_lighting: "Lighting",
     cat_tactical: "Tactical",
     cat_notes: "Notes & Documents",
-    cat_accessories: "Accessories",
     cat_other: "Other",
   },
   it: {
@@ -223,15 +222,14 @@ const translations = {
     expired: "Scaduto",
     pageNotFound: "Oops! Pagina non trovata",
     returnHome: "Torna alla Home",
+    cat_clothing: "Abbigliamento",
+    cat_commsRadio: "Comms & Radio",
     cat_foodWater: "Cibo e acqua",
     cat_hygiene: "Igiene",
-    cat_clothing: "Abbigliamento",
     cat_medicine: "Medicinali",
     cat_equipment: "Attrezzatura",
-    cat_lighting: "Illuminazione",
     cat_tactical: "Tattica",
     cat_notes: "Appunti & Documenti",
-    cat_accessories: "Accessori",
     cat_other: "Altro",
   },
 } as const;
@@ -277,10 +275,9 @@ const categoryKeyMap: Record<string, keyof Translations> = {
   clothing: "cat_clothing",
   medicine: "cat_medicine",
   equipment: "cat_equipment",
-  lighting: "cat_lighting",
+  "comms-radio": "cat_commsRadio",
   tactical: "cat_tactical",
   notes: "cat_notes",
-  accessories: "cat_accessories",
   other: "cat_other",
 };
 
@@ -293,15 +290,14 @@ export function useCategoryLabel(category: string): string {
 export function useTranslatedCategories() {
   const { t } = useLanguage();
   return [
+    { value: "clothing" as const, label: t.cat_clothing, icon: "👕" },
+    { value: "comms-radio" as const, label: t.cat_commsRadio, icon: "📻" },
+    { value: "equipment" as const, label: t.cat_equipment, icon: "🏕️" },
     { value: "food-water" as const, label: t.cat_foodWater, icon: "🍽️" },
     { value: "hygiene" as const, label: t.cat_hygiene, icon: "🧼" },
-    { value: "clothing" as const, label: t.cat_clothing, icon: "👕" },
     { value: "medicine" as const, label: t.cat_medicine, icon: "💊" },
-    { value: "equipment" as const, label: t.cat_equipment, icon: "🏕️" },
-    { value: "lighting" as const, label: t.cat_lighting, icon: "🔦" },
-    { value: "tactical" as const, label: t.cat_tactical, icon: "🎯" },
     { value: "notes" as const, label: t.cat_notes, icon: "📝" },
-    { value: "accessories" as const, label: t.cat_accessories, icon: "🎒" },
+    { value: "tactical" as const, label: t.cat_tactical, icon: "🎯" },
     { value: "other" as const, label: t.cat_other, icon: "📦" },
   ];
 }

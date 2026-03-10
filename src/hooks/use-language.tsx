@@ -290,15 +290,14 @@ export function useCategoryLabel(category: string): string {
 export function useTranslatedCategories() {
   const { t } = useLanguage();
   return [
+    { value: "clothing" as const, label: t.cat_clothing, icon: "👕" },
+    { value: "comms-radio" as const, label: t.cat_commsRadio, icon: "📻" },
+    { value: "equipment" as const, label: t.cat_equipment, icon: "🏕️" },
     { value: "food-water" as const, label: t.cat_foodWater, icon: "🍽️" },
     { value: "hygiene" as const, label: t.cat_hygiene, icon: "🧼" },
-    { value: "clothing" as const, label: t.cat_clothing, icon: "👕" },
     { value: "medicine" as const, label: t.cat_medicine, icon: "💊" },
-    { value: "equipment" as const, label: t.cat_equipment, icon: "🏕️" },
-    { value: "lighting" as const, label: t.cat_lighting, icon: "🔦" },
-    { value: "tactical" as const, label: t.cat_tactical, icon: "🎯" },
     { value: "notes" as const, label: t.cat_notes, icon: "📝" },
-    { value: "accessories" as const, label: t.cat_accessories, icon: "🎒" },
+    { value: "tactical" as const, label: t.cat_tactical, icon: "🎯" },
     { value: "other" as const, label: t.cat_other, icon: "📦" },
   ];
 }

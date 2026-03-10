@@ -125,6 +125,30 @@ export function HamburgerMenu() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={expiryOpen} onOpenChange={setExpiryOpen}>
+        <DialogContent className="max-w-xs">
+          <DialogHeader>
+            <DialogTitle>{t.expiryWarningLabel}</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-2">
+            {expiryOptions.map((d) => (
+              <Button
+                key={d}
+                variant={expiryWarningDays === d ? "default" : "outline"}
+                size="sm"
+                className="text-sm"
+                onClick={() => {
+                  setExpiryWarningDays(d);
+                  setExpiryOpen(false);
+                }}
+              >
+                {t.expiryWarningDaysLabel(d)}
+              </Button>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

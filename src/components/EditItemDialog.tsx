@@ -33,6 +33,7 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
     item.expiryDate ? new Date(item.expiryDate) : undefined
   );
   const [notes, setNotes] = useState(item.notes);
+  const [checked, setChecked] = useState(item.checked);
   const saveItem = useSaveItem();
   const { t } = useLanguage();
   const categories = useTranslatedCategories();

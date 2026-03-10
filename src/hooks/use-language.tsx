@@ -298,6 +298,7 @@ export function useTranslatedCategories() {
     { value: "equipment" as const, label: t.cat_equipment, icon: "🏕️" },
     { value: "food-water" as const, label: t.cat_foodWater, icon: "🍽️" },
     { value: "hygiene" as const, label: t.cat_hygiene, icon: "🧼" },
+    { value: "lighting" as const, label: t.cat_lighting, icon: "🔦" },
     { value: "medicine" as const, label: t.cat_medicine, icon: "💊" },
     { value: "notes" as const, label: t.cat_notes, icon: "📝" },
     { value: "tactical" as const, label: t.cat_tactical, icon: "🎯" },

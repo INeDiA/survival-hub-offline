@@ -37,8 +37,8 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
         ...bag,
         name: name.trim(),
         description: description.trim(),
-        weightLimit: toGrams(parseFloat(weightLimit) || 15),
-        bagWeight: toGrams(parseFloat(bagWeight) || 0),
+        weightLimit: Math.round((parseFloat(weightLimit) || 15) * 1000),
+        bagWeight: Math.round((parseFloat(bagWeight) || 0) * 1000),
         updatedAt: new Date().toISOString(),
       },
       { onSuccess: () => onOpenChange(false) }

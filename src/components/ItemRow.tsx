@@ -28,9 +28,9 @@ export function ItemRow({ item }: ItemRowProps) {
 
   // Get icon from translated categories
   const catIcons: Record<string, string> = {
-    water: "💧", food: "🥫", shelter: "⛺", "first-aid": "🏥", fire: "🔥",
-    tools: "🔧", hygiene: "🧼", communication: "📻", documents: "📄",
-    clothing: "👕", navigation: "🧭", defense: "🛡️", "comms-radio": "📻", other: "📦",
+    "food-water": "🍽️", hygiene: "🧼", clothing: "👕", medicine: "💊",
+    equipment: "🏕️", lighting: "🔦", tactical: "🎯", notes: "📝",
+    "comms-radio": "📻", other: "📦",
   };
   const catIcon = catIcons[item.category] || "📦";
 

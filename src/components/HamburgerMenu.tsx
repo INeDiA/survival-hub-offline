@@ -16,6 +16,8 @@ import { useTheme } from "@/hooks/use-theme";
 import { useLanguage } from "@/hooks/use-language";
 import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
+import { useExpiryDays } from "@/hooks/use-expiry-days";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function HamburgerMenu() {
   const [backupOpen, setBackupOpen] = useState(false);

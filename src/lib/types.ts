@@ -26,6 +26,7 @@ export type ItemCategory =
   | "clothing"
   | "medicine"
   | "equipment"
+  | "lighting"
   | "tactical"
   | "notes"
   | "comms-radio"
@@ -38,6 +39,7 @@ export const CATEGORIES: { value: ItemCategory; label: string; icon: string }[] 
   { value: "food-water", label: "Cibo e acqua", icon: "🍽️" },
   { value: "comms-radio", label: "Comms & Radio", icon: "📻" },
   { value: "hygiene", label: "Igiene", icon: "🧼" },
+  { value: "lighting", label: "Illuminazione", icon: "🔦" },
   { value: "medicine", label: "Medicinali", icon: "💊" },
   { value: "tactical", label: "Tattica", icon: "🎯" },
   { value: "other", label: "Altro", icon: "📦" },

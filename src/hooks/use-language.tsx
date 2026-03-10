@@ -124,15 +124,14 @@ const translations = {
     returnHome: "Return to Home",
     
     // Categories
+    cat_clothing: "Clothing",
+    cat_commsRadio: "Comms & Radio",
     cat_foodWater: "Food & Water",
     cat_hygiene: "Hygiene",
-    cat_clothing: "Clothing",
     cat_medicine: "Medicine",
     cat_equipment: "Equipment",
-    cat_lighting: "Lighting",
     cat_tactical: "Tactical",
     cat_notes: "Notes & Documents",
-    cat_accessories: "Accessories",
     cat_other: "Other",
   },
   it: {

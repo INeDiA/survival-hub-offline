@@ -24,12 +24,14 @@ export type ItemCategory =
   | "food-water"
   | "hygiene"
   | "clothing"
-  | "medicine"
+  | "first-aid"
   | "equipment"
   | "lighting"
   | "tactical"
   | "notes"
   | "comms-radio"
+  | "fire-cooking"
+  | "tech"
   | "other";
 
 export const CATEGORIES: { value: ItemCategory; label: string; icon: string }[] = [
@@ -38,10 +40,12 @@ export const CATEGORIES: { value: ItemCategory; label: string; icon: string }[] 
   { value: "equipment", label: "Attrezzatura", icon: "🏕️" },
   { value: "food-water", label: "Cibo e acqua", icon: "🍽️" },
   { value: "comms-radio", label: "Comms & Radio", icon: "📻" },
+  { value: "fire-cooking", label: "Fuoco & Cucina", icon: "🔥" },
   { value: "hygiene", label: "Igiene", icon: "🧼" },
   { value: "lighting", label: "Illuminazione", icon: "🔦" },
-  { value: "medicine", label: "Medicinali", icon: "💊" },
+  { value: "first-aid", label: "Primo Soccorso", icon: "🩹" },
   { value: "tactical", label: "Tattica", icon: "🎯" },
+  { value: "tech", label: "Tech", icon: "📱" },
   { value: "other", label: "Altro", icon: "📦" },
 ];
 

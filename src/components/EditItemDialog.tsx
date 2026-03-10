@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +33,7 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
     item.expiryDate ? new Date(item.expiryDate) : undefined
   );
   const [notes, setNotes] = useState(item.notes);
+  const [checked, setChecked] = useState(item.checked);
   const saveItem = useSaveItem();
   const { t } = useLanguage();
   const categories = useTranslatedCategories();
@@ -44,6 +46,7 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
     setQuantity(String(item.quantity));
     setExpiryDate(item.expiryDate ? new Date(item.expiryDate) : undefined);
     setNotes(item.notes);
+    setChecked(item.checked);
   }, [item]);
 
   const handleSubmit = () => {
@@ -57,6 +60,7 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
         quantity: parseInt(quantity) || 1,
         expiryDate: expiryDate ? expiryDate.toISOString() : null,
         notes: notes.trim(),
+        checked,
       },
       { onSuccess: () => onOpenChange(false) }
     );
@@ -120,6 +124,10 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
           <div>
             <Label>{t.notes}</Label>
             <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+          </div>
+          <div className="flex items-center gap-3">
+            <Switch checked={checked} onCheckedChange={setChecked} id="in-bag-toggle" />
+            <Label htmlFor="in-bag-toggle" className="text-sm cursor-pointer">{t.alreadyInBag}</Label>
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>
             {t.saveChanges}

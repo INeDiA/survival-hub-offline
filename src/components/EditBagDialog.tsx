@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { useSaveBag } from "@/hooks/use-bags";
 import type { Bag } from "@/lib/types";
 import { useLanguage } from "@/hooks/use-language";
@@ -20,16 +20,12 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
   const [description, setDescription] = useState(bag.description);
   const [weightLimit, setWeightLimit] = useState(String(bag.weightLimit / 1000));
   const [bagWeight, setBagWeight] = useState(String((bag.bagWeight || 0) / 1000));
-  const [unit, setUnit] = useState<"kg" | "g">("kg");
   const saveBag = useSaveBag();
   const { t } = useLanguage();
-
-  const toGrams = (v: number) => unit === "kg" ? Math.round(v * 1000) : v;
 
   useEffect(() => {
     setName(bag.name);
     setDescription(bag.description);
-    setUnit("kg");
     setWeightLimit(String(bag.weightLimit / 1000));
     setBagWeight(String((bag.bagWeight || 0) / 1000));
   }, [bag]);
@@ -41,8 +37,8 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
         ...bag,
         name: name.trim(),
         description: description.trim(),
-        weightLimit: toGrams(parseFloat(weightLimit) || 15),
-        bagWeight: toGrams(parseFloat(bagWeight) || 0),
+        weightLimit: Math.round((parseFloat(weightLimit) || 15) * 1000),
+        bagWeight: Math.round((parseFloat(bagWeight) || 0) * 1000),
         updatedAt: new Date().toISOString(),
       },
       { onSuccess: () => onOpenChange(false) }
@@ -64,24 +60,14 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
             <Label>{t.description}</Label>
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
           </div>
-          <div>
-            <Label>{t.unit}</Label>
-            <Select value={unit} onValueChange={(v) => setUnit(v as "kg" | "g")}>
-              <SelectTrigger className="w-24"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="kg">kg</SelectItem>
-                <SelectItem value="g">g</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>{t.weightLimit} ({unit})</Label>
-              <Input type="number" step={unit === "kg" ? "0.1" : "1"} value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
+              <Label>{t.weightLimit} (kg)</Label>
+              <Input type="number" step="0.1" value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
             </div>
             <div>
-              <Label>{t.bagWeight} ({unit})</Label>
-              <Input type="number" step={unit === "kg" ? "0.01" : "1"} value={bagWeight} onChange={(e) => setBagWeight(e.target.value)} />
+              <Label>{t.bagWeight} (kg)</Label>
+              <Input type="number" step="0.01" value={bagWeight} onChange={(e) => setBagWeight(e.target.value)} />
             </div>
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>

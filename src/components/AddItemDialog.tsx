@@ -28,7 +28,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
   const [name, setName] = useState("");
   const [category, setCategory] = useState<ItemCategory>("other");
   const [weight, setWeight] = useState("0");
-  const [weightUnit, setWeightUnit] = useState<"kg" | "g">("kg");
+  const [weightUnit, setWeightUnit] = useState<"kg" | "g">("g");
   const [quantity, setQuantity] = useState("1");
   const [expiryDate, setExpiryDate] = useState<Date | undefined>();
   const [notes, setNotes] = useState("");

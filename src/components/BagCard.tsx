@@ -20,7 +20,7 @@ export function BagCard({ bag }: BagCardProps) {
   const { data: items = [] } = useItems(bag.id);
   const presentItems = items.filter((i) => i.checked);
   const totalWeight = (bag.bagWeight || 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
-  const expiring = getExpiringItems(items);
+  const expiring = useExpiringItems(items);
   const { t } = useLanguage();
 
   return (

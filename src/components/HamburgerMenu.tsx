@@ -80,21 +80,9 @@ export function HamburgerMenu() {
             <Weight className="mr-2 h-4 w-4" />
             {nextUnit === "kg" ? "Kg" : t.lbsLabel}
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="flex items-center gap-2">
-            <Clock className="h-4 w-4 shrink-0" />
-            <span className="flex-1 text-sm">{t.expiryWarningLabel}</span>
-            <Select value={String(expiryWarningDays)} onValueChange={(v) => setExpiryWarningDays(Number(v))}>
-              <SelectTrigger className="h-7 w-[100px] text-xs">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {expiryOptions.map((d) => (
-                  <SelectItem key={d} value={String(d)}>
-                    {t.expiryWarningDaysLabel(d)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <DropdownMenuItem onClick={() => setExpiryOpen(true)}>
+            <Clock className="mr-2 h-4 w-4" />
+            {t.expiryWarningLabel}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setBackupOpen(true)}>

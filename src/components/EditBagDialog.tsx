@@ -20,11 +20,8 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
   const [description, setDescription] = useState(bag.description);
   const [weightLimit, setWeightLimit] = useState(String(bag.weightLimit / 1000));
   const [bagWeight, setBagWeight] = useState(String((bag.bagWeight || 0) / 1000));
-  const [unit, setUnit] = useState<"kg" | "g">("kg");
   const saveBag = useSaveBag();
   const { t } = useLanguage();
-
-  const toGrams = (v: number) => unit === "kg" ? Math.round(v * 1000) : v;
 
   useEffect(() => {
     setName(bag.name);

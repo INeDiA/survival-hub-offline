@@ -22,12 +22,12 @@ interface EditItemDialogProps {
 }
 
 export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps) {
-  const [weightUnit, setWeightUnit] = useState<"kg" | "g">("kg");
+  const [weightUnit, setWeightUnit] = useState<"kg" | "g">("g");
   const toGrams = (v: number) => weightUnit === "kg" ? Math.round(v * 1000) : v;
 
   const [name, setName] = useState(item.name);
   const [category, setCategory] = useState<ItemCategory>(item.category);
-  const [weight, setWeight] = useState(String(item.weight / 1000));
+  const [weight, setWeight] = useState(String(item.weight));
   const [quantity, setQuantity] = useState(String(item.quantity));
   const [expiryDate, setExpiryDate] = useState<Date | undefined>(
     item.expiryDate ? new Date(item.expiryDate) : undefined
@@ -41,8 +41,8 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
   useEffect(() => {
     setName(item.name);
     setCategory(item.category);
-    setWeightUnit("kg");
-    setWeight(String(item.weight / 1000));
+    setWeightUnit("g");
+    setWeight(String(item.weight));
     setQuantity(String(item.quantity));
     setExpiryDate(item.expiryDate ? new Date(item.expiryDate) : undefined);
     setNotes(item.notes);

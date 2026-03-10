@@ -60,6 +60,7 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
         quantity: parseInt(quantity) || 1,
         expiryDate: expiryDate ? expiryDate.toISOString() : null,
         notes: notes.trim(),
+        checked,
       },
       { onSuccess: () => onOpenChange(false) }
     );

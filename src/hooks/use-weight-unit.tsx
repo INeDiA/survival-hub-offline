@@ -40,7 +40,8 @@ export function WeightUnitProvider({ children }: { children: ReactNode }) {
 
   const formatWeight = useCallback((grams: number) => {
     if (unit === "lbs") return `${((grams / 1000) * KG_TO_LBS).toFixed(2)} ${t.lbsLabel}`;
-    return `${(grams / 1000).toFixed(2)} kg`;
+    if (grams >= 1000) return `${(grams / 1000).toFixed(2)} kg`;
+    return `${Math.round(grams)} g`;
   }, [unit, t.lbsLabel]);
 
   const toGrams = useCallback((value: number) => {

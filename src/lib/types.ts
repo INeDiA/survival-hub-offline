@@ -26,22 +26,20 @@ export type ItemCategory =
   | "clothing"
   | "medicine"
   | "equipment"
-  | "lighting"
   | "tactical"
   | "notes"
-  | "accessories"
+  | "comms-radio"
   | "other";
 
 export const CATEGORIES: { value: ItemCategory; label: string; icon: string }[] = [
-  { value: "food-water", label: "Cibo e acqua", icon: "🍽️" },
-  { value: "hygiene", label: "Igiene", icon: "🧼" },
   { value: "clothing", label: "Abbigliamento", icon: "👕" },
-  { value: "medicine", label: "Medicinali", icon: "💊" },
-  { value: "equipment", label: "Attrezzatura", icon: "🏕️" },
-  { value: "lighting", label: "Illuminazione", icon: "🔦" },
-  { value: "tactical", label: "Tattica", icon: "🎯" },
   { value: "notes", label: "Appunti & Documenti", icon: "📝" },
-  { value: "accessories", label: "Accessori", icon: "🎒" },
+  { value: "equipment", label: "Attrezzatura", icon: "🏕️" },
+  { value: "food-water", label: "Cibo e acqua", icon: "🍽️" },
+  { value: "comms-radio", label: "Comms & Radio", icon: "📻" },
+  { value: "hygiene", label: "Igiene", icon: "🧼" },
+  { value: "medicine", label: "Medicinali", icon: "💊" },
+  { value: "tactical", label: "Tattica", icon: "🎯" },
   { value: "other", label: "Altro", icon: "📦" },
 ];
 

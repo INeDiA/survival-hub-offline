@@ -227,6 +227,7 @@ const translations = {
     cat_commsRadio: "Comms & Radio",
     cat_foodWater: "Cibo e acqua",
     cat_hygiene: "Igiene",
+    cat_lighting: "Illuminazione",
     cat_medicine: "Medicinali",
     cat_equipment: "Attrezzatura",
     cat_tactical: "Tattica",

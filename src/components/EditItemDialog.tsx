@@ -46,6 +46,7 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
     setQuantity(String(item.quantity));
     setExpiryDate(item.expiryDate ? new Date(item.expiryDate) : undefined);
     setNotes(item.notes);
+    setChecked(item.checked);
   }, [item]);
 
   const handleSubmit = () => {

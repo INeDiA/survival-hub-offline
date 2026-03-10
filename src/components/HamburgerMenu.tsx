@@ -17,10 +17,11 @@ import { useLanguage } from "@/hooks/use-language";
 import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
 import { useExpiryDays } from "@/hooks/use-expiry-days";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 
 export function HamburgerMenu() {
   const [backupOpen, setBackupOpen] = useState(false);
+  const [expiryOpen, setExpiryOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const qc = useQueryClient();
   const { theme, toggle } = useTheme();
@@ -79,21 +80,9 @@ export function HamburgerMenu() {
             <Weight className="mr-2 h-4 w-4" />
             {nextUnit === "kg" ? "Kg" : t.lbsLabel}
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="flex items-center gap-2">
-            <Clock className="h-4 w-4 shrink-0" />
-            <span className="flex-1 text-sm">{t.expiryWarningLabel}</span>
-            <Select value={String(expiryWarningDays)} onValueChange={(v) => setExpiryWarningDays(Number(v))}>
-              <SelectTrigger className="h-7 w-[100px] text-xs">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {expiryOptions.map((d) => (
-                  <SelectItem key={d} value={String(d)}>
-                    {t.expiryWarningDaysLabel(d)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <DropdownMenuItem onClick={() => setExpiryOpen(true)}>
+            <Clock className="mr-2 h-4 w-4" />
+            {t.expiryWarningLabel}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setBackupOpen(true)}>
@@ -133,6 +122,30 @@ export function HamburgerMenu() {
             <p className="text-xs text-muted-foreground">
               {t.importWarning}
             </p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={expiryOpen} onOpenChange={setExpiryOpen}>
+        <DialogContent className="max-w-xs">
+          <DialogHeader>
+            <DialogTitle>{t.expiryWarningLabel}</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-2">
+            {expiryOptions.map((d) => (
+              <Button
+                key={d}
+                variant={expiryWarningDays === d ? "default" : "outline"}
+                size="sm"
+                className="text-sm"
+                onClick={() => {
+                  setExpiryWarningDays(d);
+                  setExpiryOpen(false);
+                }}
+              >
+                {t.expiryWarningDaysLabel(d)}
+              </Button>
+            ))}
           </div>
         </DialogContent>
       </Dialog>

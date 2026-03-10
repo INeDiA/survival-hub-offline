@@ -60,24 +60,14 @@ export function EditBagDialog({ bag, open, onOpenChange }: EditBagDialogProps) {
             <Label>{t.description}</Label>
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
           </div>
-          <div>
-            <Label>{t.unit}</Label>
-            <Select value={unit} onValueChange={(v) => setUnit(v as "kg" | "g")}>
-              <SelectTrigger className="w-24"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="kg">kg</SelectItem>
-                <SelectItem value="g">g</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>{t.weightLimit} ({unit})</Label>
-              <Input type="number" step={unit === "kg" ? "0.1" : "1"} value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
+              <Label>{t.weightLimit} (kg)</Label>
+              <Input type="number" step="0.1" value={weightLimit} onChange={(e) => setWeightLimit(e.target.value)} />
             </div>
             <div>
-              <Label>{t.bagWeight} ({unit})</Label>
-              <Input type="number" step={unit === "kg" ? "0.01" : "1"} value={bagWeight} onChange={(e) => setBagWeight(e.target.value)} />
+              <Label>{t.bagWeight} (kg)</Label>
+              <Input type="number" step="0.01" value={bagWeight} onChange={(e) => setBagWeight(e.target.value)} />
             </div>
           </div>
           <Button onClick={handleSubmit} className="w-full" disabled={!name.trim()}>

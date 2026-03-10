@@ -31,7 +31,7 @@ export function HamburgerMenu() {
   const { expiryWarningDays, setExpiryWarningDays } = useExpiryDays();
 
   const nextUnit = unit === "kg" ? "lbs" : "kg";
-  const expiryOptions = [7, 14, 30, 60, 90];
+  const expiryOptions = [14, 30, 60, 90];
 
   const handleExport = async () => {
     try {

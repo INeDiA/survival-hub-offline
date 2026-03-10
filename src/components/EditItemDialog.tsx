@@ -22,7 +22,7 @@ interface EditItemDialogProps {
 }
 
 export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps) {
-  const [weightUnit, setWeightUnit] = useState<"kg" | "g">("kg");
+  const [weightUnit, setWeightUnit] = useState<"kg" | "g">("g");
   const toGrams = (v: number) => weightUnit === "kg" ? Math.round(v * 1000) : v;
 
   const [name, setName] = useState(item.name);

@@ -43,7 +43,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
     setName("");
     setCategory("other");
     setWeight("0");
-    setWeightUnit("kg");
+    setWeightUnit("g");
     setQuantity("1");
     setExpiryDate(undefined);
     setNotes("");

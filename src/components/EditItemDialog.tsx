@@ -27,7 +27,7 @@ export function EditItemDialog({ item, open, onOpenChange }: EditItemDialogProps
 
   const [name, setName] = useState(item.name);
   const [category, setCategory] = useState<ItemCategory>(item.category);
-  const [weight, setWeight] = useState(String(item.weight / 1000));
+  const [weight, setWeight] = useState(String(item.weight));
   const [quantity, setQuantity] = useState(String(item.quantity));
   const [expiryDate, setExpiryDate] = useState<Date | undefined>(
     item.expiryDate ? new Date(item.expiryDate) : undefined

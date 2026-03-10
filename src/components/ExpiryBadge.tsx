@@ -2,8 +2,8 @@ import { differenceInDays, parseISO } from "date-fns";
 import { AlertTriangle, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Item } from "@/lib/types";
-import { EXPIRY_WARNING_DAYS } from "@/lib/types";
 import { useLanguage } from "@/hooks/use-language";
+import { useExpiryDays } from "@/hooks/use-expiry-days";
 
 interface ExpiryBadgeProps {
   item: Item;
@@ -12,6 +12,7 @@ interface ExpiryBadgeProps {
 
 export function ExpiryBadge({ item, className }: ExpiryBadgeProps) {
   const { t } = useLanguage();
+  const { expiryWarningDays } = useExpiryDays();
 
   if (!item.expiryDate) return null;
 
@@ -27,7 +28,7 @@ export function ExpiryBadge({ item, className }: ExpiryBadgeProps) {
     );
   }
 
-  if (daysLeft <= EXPIRY_WARNING_DAYS) {
+  if (daysLeft <= expiryWarningDays) {
     return (
       <span className={cn("inline-flex items-center gap-1 text-xs font-mono text-warning", className)}>
         <AlertTriangle className="h-3 w-3" /> {t.daysLeft(daysLeft)}
@@ -42,11 +43,12 @@ export function ExpiryBadge({ item, className }: ExpiryBadgeProps) {
   );
 }
 
-export function getExpiringItems(items: Item[]) {
+export function useExpiringItems(items: Item[]) {
+  const { expiryWarningDays } = useExpiryDays();
   const today = new Date();
   return items.filter((item) => {
     if (!item.expiryDate) return false;
     const daysLeft = differenceInDays(parseISO(item.expiryDate), today);
-    return daysLeft <= EXPIRY_WARNING_DAYS;
+    return daysLeft <= expiryWarningDays;
   });
 }

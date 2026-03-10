@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
 import { WeightUnitProvider } from "@/hooks/use-weight-unit.tsx";
+import { ExpiryDaysProvider } from "@/hooks/use-expiry-days.tsx";
 import Index from "./pages/Index.tsx";
 import BagDetail from "./pages/BagDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -15,17 +16,19 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
       <WeightUnitProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/bag/:id" element={<BagDetail />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <ExpiryDaysProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/bag/:id" element={<BagDetail />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </ExpiryDaysProvider>
       </WeightUnitProvider>
     </LanguageProvider>
   </QueryClientProvider>

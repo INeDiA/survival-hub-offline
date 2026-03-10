@@ -4,7 +4,7 @@ import { useAllItems } from "@/hooks/use-items";
 import { BagCard } from "@/components/BagCard";
 import { AddBagDialog } from "@/components/AddBagDialog";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
-import { getExpiringItems } from "@/components/ExpiryBadge";
+import { useExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle, ChevronRight, X, Download, Share } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { differenceInDays, parseISO } from "date-fns";
@@ -26,7 +26,7 @@ const Index = () => {
 
   const presentItems = allItems.filter((i) => i.checked);
   const totalWeight = bags.reduce((s, b) => s + (b.bagWeight || 0), 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
-  const expiring = getExpiringItems(allItems);
+  const expiring = useExpiringItems(allItems);
 
   const bagNameMap = new Map(bags.map((b) => [b.id, b.name]));
 

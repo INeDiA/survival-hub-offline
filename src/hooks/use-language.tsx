@@ -107,6 +107,8 @@ const translations = {
     importError: "Invalid or corrupted file",
     language: "Language",
     lbsLabel: "Lbs",
+    expiryWarningLabel: "Expiry warning",
+    expiryWarningDaysLabel: (d: number) => `${d} days before`,
     storageDenied: "Your browser may delete app data under storage pressure. Export a backup regularly to avoid data loss.",
     storageDismiss: "Got it",
     
@@ -216,6 +218,8 @@ const translations = {
     importError: "File non valido o corrotto",
     language: "Lingua",
     lbsLabel: "Libbre",
+    expiryWarningLabel: "Preavviso scadenza",
+    expiryWarningDaysLabel: (d: number) => `${d} giorni prima`,
     storageDenied: "Il browser potrebbe cancellare i dati dell'app in caso di spazio insufficiente. Esporta un backup regolarmente per evitare perdite di dati.",
     storageDismiss: "Ho capito",
     installApp: "Installa App",

@@ -303,11 +303,13 @@ export function useTranslatedCategories() {
     { value: "comms-radio" as const, label: t.cat_commsRadio, icon: "📻" },
     { value: "equipment" as const, label: t.cat_equipment, icon: "🏕️" },
     { value: "food-water" as const, label: t.cat_foodWater, icon: "🍽️" },
+    { value: "fire-cooking" as const, label: t.cat_fireCooking, icon: "🔥" },
     { value: "hygiene" as const, label: t.cat_hygiene, icon: "🧼" },
     { value: "lighting" as const, label: t.cat_lighting, icon: "🔦" },
-    { value: "medicine" as const, label: t.cat_medicine, icon: "💊" },
+    { value: "first-aid" as const, label: t.cat_firstAid, icon: "🩹" },
     { value: "notes" as const, label: t.cat_notes, icon: "📝" },
     { value: "tactical" as const, label: t.cat_tactical, icon: "🎯" },
+    { value: "tech" as const, label: t.cat_tech, icon: "📱" },
     { value: "other" as const, label: t.cat_other, icon: "📦" },
   ];
 }

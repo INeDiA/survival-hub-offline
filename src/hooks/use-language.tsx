@@ -275,10 +275,9 @@ const categoryKeyMap: Record<string, keyof Translations> = {
   clothing: "cat_clothing",
   medicine: "cat_medicine",
   equipment: "cat_equipment",
-  lighting: "cat_lighting",
+  "comms-radio": "cat_commsRadio",
   tactical: "cat_tactical",
   notes: "cat_notes",
-  accessories: "cat_accessories",
   other: "cat_other",
 };
 

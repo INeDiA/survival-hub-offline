@@ -128,6 +128,7 @@ const translations = {
     cat_commsRadio: "Comms & Radio",
     cat_foodWater: "Food & Water",
     cat_hygiene: "Hygiene",
+    cat_lighting: "Lighting",
     cat_medicine: "Medicine",
     cat_equipment: "Equipment",
     cat_tactical: "Tactical",

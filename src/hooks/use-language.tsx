@@ -107,6 +107,8 @@ const translations = {
     importError: "Invalid or corrupted file",
     language: "Language",
     lbsLabel: "Lbs",
+    expiryWarningLabel: "Expiry warning",
+    expiryWarningDaysLabel: (d: number) => `${d} days before`,
     storageDenied: "Your browser may delete app data under storage pressure. Export a backup regularly to avoid data loss.",
     storageDismiss: "Got it",
     

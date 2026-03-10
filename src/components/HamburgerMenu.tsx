@@ -21,6 +21,7 @@ import { useExpiryDays } from "@/hooks/use-expiry-days";
 
 export function HamburgerMenu() {
   const [backupOpen, setBackupOpen] = useState(false);
+  const [expiryOpen, setExpiryOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const qc = useQueryClient();
   const { theme, toggle } = useTheme();

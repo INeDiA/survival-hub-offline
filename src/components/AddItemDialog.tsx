@@ -26,7 +26,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
   const open = controlledOpen ?? internalOpen;
   const setOpen = controlledOnOpenChange ?? setInternalOpen;
   const [name, setName] = useState("");
-  const [category, setCategory] = useState<ItemCategory>("accessories");
+  const [category, setCategory] = useState<ItemCategory>("other");
   const [weight, setWeight] = useState("0");
   const [weightUnit, setWeightUnit] = useState<"kg" | "g">("kg");
   const [quantity, setQuantity] = useState("1");
@@ -41,7 +41,7 @@ export function AddItemDialog({ bagId, open: controlledOpen, onOpenChange: contr
 
   const reset = () => {
     setName("");
-    setCategory("accessories");
+    setCategory("other");
     setWeight("0");
     setWeightUnit("kg");
     setQuantity("1");

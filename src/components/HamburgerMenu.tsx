@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Menu, Download, Upload, Moon, Sun, Globe, Weight, Smartphone, Clock } from "lucide-react";
+import { Menu, Download, Upload, Share2, Moon, Sun, Globe, Weight, Smartphone, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -41,6 +41,26 @@ export function HamburgerMenu() {
       toast.success(t.backupSuccess);
     } catch {
       toast.error(t.backupError);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      const json = await exportAllData();
+      const date = new Date().toISOString().slice(0, 10);
+      const filename = `bugout-backup-${date}.json`;
+      const file = new File([json], filename, { type: "application/json" });
+
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: filename });
+      } else {
+        toast.info(t.shareNotSupported);
+        downloadJson(json, filename);
+      }
+    } catch (err: any) {
+      if (err?.name !== "AbortError") {
+        toast.error(t.backupError);
+      }
     }
   };
 
@@ -112,6 +132,9 @@ export function HamburgerMenu() {
           <div className="space-y-4">
             <Button onClick={handleExport} className="w-full gap-2">
               <Download className="h-4 w-4" /> {t.exportAll}
+            </Button>
+            <Button variant="outline" onClick={handleShare} className="w-full gap-2">
+              <Share2 className="h-4 w-4" /> {t.shareBackup}
             </Button>
             <div className="relative">
               <Button variant="outline" className="w-full gap-2" onClick={() => fileRef.current?.click()}>

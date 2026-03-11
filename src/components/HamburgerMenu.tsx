@@ -44,6 +44,26 @@ export function HamburgerMenu() {
     }
   };
 
+  const handleShare = async () => {
+    try {
+      const json = await exportAllData();
+      const date = new Date().toISOString().slice(0, 10);
+      const filename = `bugout-backup-${date}.json`;
+      const file = new File([json], filename, { type: "application/json" });
+
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: filename });
+      } else {
+        toast.info(t.shareNotSupported);
+        downloadJson(json, filename);
+      }
+    } catch (err: any) {
+      if (err?.name !== "AbortError") {
+        toast.error(t.backupError);
+      }
+    }
+  };
+
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;

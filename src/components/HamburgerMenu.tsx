@@ -133,6 +133,9 @@ export function HamburgerMenu() {
             <Button onClick={handleExport} className="w-full gap-2">
               <Download className="h-4 w-4" /> {t.exportAll}
             </Button>
+            <Button variant="outline" onClick={handleShare} className="w-full gap-2">
+              <Share2 className="h-4 w-4" /> {t.shareBackup}
+            </Button>
             <div className="relative">
               <Button variant="outline" className="w-full gap-2" onClick={() => fileRef.current?.click()}>
                 <Upload className="h-4 w-4" /> {t.importBackup}

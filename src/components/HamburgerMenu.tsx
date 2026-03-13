@@ -52,15 +52,18 @@ export function HamburgerMenu() {
       const file = new File([json], filename, { type: "application/json" });
 
       if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: filename });
-      } else {
-        toast.info(t.shareNotSupported);
-        downloadJson(json, filename);
+        try {
+          await navigator.share({ files: [file], title: filename });
+          return;
+        } catch (shareErr: any) {
+          if (shareErr?.name === "AbortError") return;
+          // share failed (e.g. desktop), fall through to download
+        }
       }
-    } catch (err: any) {
-      if (err?.name !== "AbortError") {
-        toast.error(t.backupError);
-      }
+      toast.info(t.shareNotSupported);
+      downloadJson(json, filename);
+    } catch {
+      toast.error(t.backupError);
     }
   };
 

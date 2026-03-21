@@ -17,6 +17,11 @@ const translations = {
     loading: "Loading...",
     noBagsCreated: "No bags created",
     createFirstBag: "Create your first bugout bag to get started",
+    starterTemplatesTitle: "Choose a starter bag",
+    starterTemplatesDescription: "Pick a ready-made template or start with an empty setup.",
+    starterTemplatesConfirm: "Use this template",
+    starterTemplatesSkip: "Start from scratch",
+    starterTemplateItems: (n: number) => `${n} item${n === 1 ? "" : "s"}`,
     
     // Bag detail
     items: "items",
@@ -153,6 +158,11 @@ const translations = {
     loading: "Caricamento...",
     noBagsCreated: "Nessuno zaino creato",
     createFirstBag: "Crea il tuo primo bugout bag per iniziare",
+    starterTemplatesTitle: "Scegli uno zaino iniziale",
+    starterTemplatesDescription: "Seleziona un template pronto oppure parti con una configurazione vuota.",
+    starterTemplatesConfirm: "Usa questo template",
+    starterTemplatesSkip: "Inizia da zero",
+    starterTemplateItems: (n: number) => `${n} oggett${n === 1 ? "o" : "i"}`,
     items: "oggetti",
     present: "presenti",
     sortBy: "Ordina per",

@@ -72,6 +72,19 @@ export async function deleteItem(id: string): Promise<void> {
   await db.delete("items", id);
 }
 
+export async function seedBagWithItems(bag: Bag, items: Item[]): Promise<void> {
+  const db = await getDB();
+  const tx = db.transaction(["bags", "items"], "readwrite");
+
+  await tx.objectStore("bags").put(bag);
+
+  for (const item of items) {
+    await tx.objectStore("items").put(item);
+  }
+
+  await tx.done;
+}
+
 // Bulk operations for import
 export async function importData(bags: Bag[], items: Item[]): Promise<void> {
   const db = await getDB();

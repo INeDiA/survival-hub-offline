@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useBags } from "@/hooks/use-bags";
 import { useAllItems } from "@/hooks/use-items";
 import { BagCard } from "@/components/BagCard";
 import { AddBagDialog } from "@/components/AddBagDialog";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
+import { StarterTemplateDialog } from "@/components/StarterTemplateDialog";
 import { useExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle, ChevronRight, X, Download, Share } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -14,24 +16,64 @@ import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 import { useStoragePersist } from "@/hooks/use-storage-persist";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
 import { Button } from "@/components/ui/button";
+import { seedBagWithItems } from "@/lib/db";
+import { buildStarterTemplateData, getStarterTemplates, STARTER_ONBOARDING_KEY } from "@/lib/starter-templates";
 
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();
   const { data: allItems = [] } = useAllItems();
   const [expiryOpen, setExpiryOpen] = useState(false);
-  const { t } = useLanguage();
+  const [starterOpen, setStarterOpen] = useState(false);
+  const { t, lang } = useLanguage();
   const { formatWeight } = useWeightUnit();
   const { state: persistState, dismissed: persistDismissed, dismiss: dismissPersist } = useStoragePersist();
   const { canShow: showInstall, isIos, install, dismiss: dismissInstall } = usePwaInstall();
+  const queryClient = useQueryClient();
 
   const presentItems = allItems.filter((i) => i.checked);
   const totalWeight = bags.reduce((s, b) => s + (b.bagWeight || 0), 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
   const expiring = useExpiringItems(allItems);
 
   const bagNameMap = new Map(bags.map((b) => [b.id, b.name]));
+  const starterTemplates = useMemo(() => getStarterTemplates(lang), [lang]);
+
+  const seedTemplate = useMutation({
+    mutationFn: async (templateId: string) => {
+      const { bag, items } = buildStarterTemplateData(templateId, lang);
+      await seedBagWithItems(bag, items);
+    },
+    onSuccess: async () => {
+      localStorage.setItem(STARTER_ONBOARDING_KEY, "1");
+      setStarterOpen(false);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["bags"] }),
+        queryClient.invalidateQueries({ queryKey: ["items"] }),
+      ]);
+    },
+  });
+
+  useEffect(() => {
+    if (typeof window === "undefined" || isLoading || bags.length > 0) return;
+
+    const onboardingCompleted = window.localStorage.getItem(STARTER_ONBOARDING_KEY) === "1";
+    if (!onboardingCompleted) setStarterOpen(true);
+  }, [bags.length, isLoading]);
+
+  const handleSkipStarter = () => {
+    localStorage.setItem(STARTER_ONBOARDING_KEY, "1");
+    setStarterOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
+      <StarterTemplateDialog
+        open={starterOpen}
+        templates={starterTemplates}
+        pending={seedTemplate.isPending}
+        onConfirm={(templateId) => seedTemplate.mutate(templateId)}
+        onSkip={handleSkipStarter}
+      />
+
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
         <div className="container flex h-14 items-center justify-between">
           <div className="flex items-center gap-2">

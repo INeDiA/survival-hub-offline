@@ -1,110 +1,114 @@
 
-Obiettivo: al primo avvio su un dispositivo, invece di mostrare un archivio vuoto, l’app propone una scelta tra più template di zaino già pronti, con nome/descrizione/lista oggetti localizzati in italiano e inglese. Dopo la scelta, i dati vengono creati una sola volta nel browser dell’utente.
+Obiettivo: aggiungere, solo nella tua vista di sviluppo/preview, un piccolo pannello di amministrazione nascosto agli utenti pubblici per modificare facilmente via interfaccia i 3 template iniziali.
 
-1. Flusso UX
-- Rilevare “prima esecuzione” controllando se non esistono zaini e se non è già stato completato l’onboarding.
-- Mostrare un dialog/pannello iniziale sopra la homepage con:
-  - breve spiegazione
-  - 2-4 template selezionabili
-  - pulsante “Usa questo template”
-  - opzione “Inizia da zero”
-- Una volta scelto:
-  - creare 1 zaino + elenco oggetti precompilato
-  - chiudere il dialog
-  - salvare un flag locale per non mostrarlo più automaticamente
+Approccio consigliato
+- Non toccherei il flusso utente pubblico.
+- Aggiungerei una modalità “template editor” visibile solo in preview/dev, rilevata dal contesto della pagina (non dal menu pubblico, non da dati utente).
+- Da lì potrai:
+  - vedere i 3 template
+  - modificare nome, descrizione, limiti peso e peso zaino in entrambe le lingue
+  - modificare gli item del template (nome it/en, categoria, peso, quantità, checked, note)
+  - aggiungere/rimuovere item
+  - copiare/esportare il JSON aggiornato del catalogo per reinserirlo velocemente nel file sorgente
 
-2. Struttura dati proposta
-Aggiungerei un catalogo statico, ad esempio in `src/lib/starter-templates.ts`, con:
-- id template
-- nome/descrizione in `it` e `en`
-- peso limite e peso zaino
-- elenco item con:
-  - nome it/en
-  - categoria
-  - peso
-  - quantità
-  - checked default
-  - note it/en opzionali
+Come la farei
+1. Isolamento “solo per me”
+- Mostrerei l’editor solo quando l’app gira nella preview Lovable o in ambiente locale/dev.
+- Sul sito pubblicato non verrebbe renderizzato nulla.
+- Eviterei qualsiasi toggle salvato in localStorage: deve dipendere dall’ambiente, non dall’utente.
 
-Esempio logico:
-```text
-template
-  bag: { name.it, name.en, description.it, description.en, ... }
-  items: [
-    { name.it, name.en, category, weight, quantity, checked }
-  ]
-```
+2. UI dedicata e discreta
+- Aggiungerei un pulsante secondario piccolo, visibile solo in preview, vicino all’header o in fondo alla homepage.
+- Il pulsante apre un dialog dedicato “Template editor”.
+- Dentro il dialog:
+  - colonna/lista dei 3 template
+  - form del template selezionato
+  - sezione elenco item con editor inline o mini-card
+  - pulsanti “Aggiungi item”, “Ripristina template originale”, “Copia JSON”
 
-3. Integrazione con la lingua
-Poiché oggi la lingua è gestita da `use-language.tsx`, i template useranno testi bilingue nello stesso stile:
-- se lingua corrente = `it`, si crea il template in italiano
-- se lingua corrente = `en`, si crea il template in inglese
+3. Modello dati
+- Riutilizzerei `src/lib/starter-templates.ts` come fonte iniziale.
+- Per rendere l’editing semplice, esporterei anche il catalogo completo dei template, non solo le funzioni helper.
+- L’editor lavorerebbe su una copia locale in memoria, senza toccare subito il comportamento dell’onboarding.
 
-Questo evita traduzioni “vive” dopo il salvataggio: il contenuto viene materializzato già nella lingua scelta in quel momento, coerente con il resto dei dati utente.
+4. Persistenza per la sola preview
+Due opzioni; consigliata la prima:
+- Opzione A: modifiche temporanee nella sessione + pulsante “Copia JSON”
+  - più sicura
+  - nessun rischio di lasciare configurazioni speciali in produzione
+  - tu copi il payload finale e poi si aggiorna il file sorgente
+- Opzione B: persistenza locale in `localStorage` ma solo in preview
+  - utile per iterare
+  - l’onboarding in preview usa i template sovrascritti localmente
+  - sul published ignora tutto
 
-4. Dove agganciare la logica
-File coinvolti:
+Io farei B + “Ripristina defaults”, così puoi provare davvero il primo avvio senza modificare subito il codice definitivo.
+
+5. Integrazione con onboarding
+- `Index.tsx` continuerebbe a usare `getStarterTemplates` e `buildStarterTemplateData`.
+- Queste funzioni leggerebbero:
+  - templates custom da preview/localStorage, se presenti e se siamo in preview
+  - altrimenti i template statici attuali
+- Così puoi verificare subito la resa del dialog iniziale.
+
+6. Sicurezza / visibilità
+- Nessun utente pubblico vedrà:
+  - il pulsante
+  - il dialog
+  - i template custom da editor
+- Il controllo sarà lato rendering in base all’ambiente preview/dev.
+- Non userei ruoli, credenziali o controlli “admin”: qui serve solo una utility di sviluppo, non un feature pubblico.
+
+File coinvolti
+- `src/lib/starter-templates.ts`
+  - esportare/normalizzare il catalogo template
+  - aggiungere helper per leggere eventuali override preview
+- nuovo `src/components/TemplateEditorDialog.tsx`
+  - interfaccia completa di modifica
 - `src/pages/Index.tsx`
-  - mostra il dialog di primo avvio
-  - decide se aprirlo
-- nuovo componente, es. `src/components/StarterTemplateDialog.tsx`
-  - UI della scelta template
-- `src/lib/db.ts`
-  - aggiunta helper per inserimento iniziale atomico di bag + items
-- `src/lib/types.ts`
-  - eventuali tipi per starter template
-- nuovo file, es. `src/lib/starter-templates.ts`
-  - definizione template precompilati
+  - mostrare il trigger solo in preview
+- opzionale nuovo helper, es. `src/lib/dev-mode.ts`
+  - centralizzare il check “preview/dev only”
 
-5. Logica di inizializzazione
-Implementazione consigliata:
-- all’avvio della homepage:
-  - leggere `bags`
-  - se `bags.length === 0` e `localStorage` non contiene `bugout-onboarding-completed`, aprire il dialog
-- se utente sceglie un template:
-  - generare nuovi `id`
-  - creare bag e item in IndexedDB
-  - invalidare query React Query (`bags`, `items`)
-  - salvare flag onboarding completato
-- se utente sceglie “Inizia da zero”:
-  - nessun dato creato
-  - salvare comunque il flag per non riproporlo ogni volta
+Nota importante
+- Oggi i template sono hardcoded nel sorgente: un editor UI non può aggiornare fisicamente il file TS da browser.
+- Quindi la soluzione corretta è: editor visuale + override locale per test + export/copia del JSON finale.
+- Se in seguito vuoi un vero backoffice persistente e privato, allora servirebbe un backend, cosa che qui al momento non c’è.
 
-6. Template consigliati
-Dato che hai chiesto scelta tra vari template, proporrei inizialmente 3:
-- BOB 72h
-  - setup generale equilibrato
-- Emergenza civile
-  - blackout, evacuazione, documenti, torcia, radio, powerbank, acqua
-- Minimalista
-  - kit essenziale leggero
+Dettagli tecnici
+- Controllo visibilità:
+```text
+mostra editor se:
+- hostname contiene lovable.app con preview
+oppure
+- ambiente dev locale
+```
+- Struttura editor:
+```text
+Dialog
+  sidebar template list
+  form generale template
+  lista item modificabili
+  actions: add / remove / reset / copy json
+```
+- Validazioni:
+  - peso >= 0
+  - quantità >= 1
+  - categoria tra quelle supportate
+  - testi non vuoti per nome zaino e nome item
 
-7. Comportamento con backup/import
-Per evitare effetti collaterali:
-- il template compare solo quando il database è vuoto
-- dopo un import backup, non deve più apparire
-- se l’utente cancella tutti gli zaini manualmente, possiamo decidere:
-  - comportamento semplice: non riapparire, perché onboarding già completato
-  - opzionale futura: voce nel menu hamburger “Carica template iniziale”
+Implementazione proposta
+1. introdurre un check centralizzato “preview/dev only”
+2. rendere il catalogo template esportabile e sovrascrivibile in preview
+3. creare il dialog editor con form per template e item
+4. collegare l’onboarding agli override della preview
+5. aggiungere copia JSON e ripristino defaults
 
-8. Nota sui dati pubblici / privacy
-Tutto resta locale come oggi:
-- il template viene creato nel browser del dispositivo
-- non viene inviato a un server
-- ogni utente del link pubblico avrà il proprio primo avvio separato
+Rischi/attenzioni
+- Se usiamo override locali, bisogna etichettare chiaramente che valgono solo in preview.
+- Conviene evitare di inserire il trigger nel menu hamburger, per non mescolare tool dev e UI utente.
+- Il dialog deve essere scrollabile e ordinato, perché i template hanno molti campi.
 
-9. Dettagli tecnici
-- Meglio usare un inserimento atomico in IndexedDB per evitare stato parziale.
-- Conviene non “tradurre al volo” i nomi item già salvati: il template va scritto nella lingua corrente al momento della creazione.
-- Il dialog deve essere piccolo e guidato, non invasivo, coerente con la scelta fatta in precedenza per mantenere menu compatti.
-- Se vuoi, in una seconda fase possiamo aggiungere miniature/icona per ogni template e una voce nel menu per reinserire un template manualmente.
-
-10. Piccola nota sul build error mostrato
-L’errore `vite: command not found` non sembra legato a questa feature applicativa, ma all’ambiente/command runner del progetto. Quando passerò all’implementazione controllerò prima `package.json` e gli script per capire se il progetto sta usando `bun`, `npm` o se manca la dipendenza/risoluzione del binario.
-
-Se approvi, implementerei così:
-1. catalogo template statici bilingue
-2. dialog di primo avvio con scelta template o avvio vuoto
-3. seed iniziale in IndexedDB con invalidazione query
-4. protezione “una sola volta per dispositivo”
-5. rifinitura copy in italiano/inglese
+Suggerimento UX finale
+- Metterei un piccolo pulsante “Edit templates” visibile solo in preview, non nel menu hamburger.
+- È più pulito, più chiaramente “strumento da sviluppatore” e impossibile da confondere con una funzione utente.

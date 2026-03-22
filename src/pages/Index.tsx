@@ -6,6 +6,7 @@ import { BagCard } from "@/components/BagCard";
 import { AddBagDialog } from "@/components/AddBagDialog";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { StarterTemplateDialog } from "@/components/StarterTemplateDialog";
+import { TemplateEditorDialog } from "@/components/TemplateEditorDialog";
 import { useExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle, ChevronRight, X, Download, Share } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -17,13 +18,15 @@ import { useStoragePersist } from "@/hooks/use-storage-persist";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
 import { Button } from "@/components/ui/button";
 import { seedBagWithItems } from "@/lib/db";
-import { buildStarterTemplateData, getStarterTemplates, STARTER_ONBOARDING_KEY } from "@/lib/starter-templates";
+import { buildStarterTemplateData, getStarterTemplates, isStarterTemplateEditorAvailable, STARTER_ONBOARDING_KEY } from "@/lib/starter-templates";
 
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();
   const { data: allItems = [] } = useAllItems();
   const [expiryOpen, setExpiryOpen] = useState(false);
   const [starterOpen, setStarterOpen] = useState(false);
+  const [templateEditorOpen, setTemplateEditorOpen] = useState(false);
+  const [templateCatalogVersion, setTemplateCatalogVersion] = useState(0);
   const { t, lang } = useLanguage();
   const { formatWeight } = useWeightUnit();
   const { state: persistState, dismissed: persistDismissed, dismiss: dismissPersist } = useStoragePersist();
@@ -33,9 +36,10 @@ const Index = () => {
   const presentItems = allItems.filter((i) => i.checked);
   const totalWeight = bags.reduce((s, b) => s + (b.bagWeight || 0), 0) + presentItems.reduce((s, i) => s + i.weight * i.quantity, 0);
   const expiring = useExpiringItems(allItems);
+  const showTemplateEditor = isStarterTemplateEditorAvailable();
 
   const bagNameMap = new Map(bags.map((b) => [b.id, b.name]));
-  const starterTemplates = useMemo(() => getStarterTemplates(lang), [lang]);
+  const starterTemplates = useMemo(() => getStarterTemplates(lang), [lang, templateCatalogVersion]);
 
   const seedTemplate = useMutation({
     mutationFn: async (templateId: string) => {
@@ -73,6 +77,14 @@ const Index = () => {
         onConfirm={(templateId) => seedTemplate.mutate(templateId)}
         onSkip={handleSkipStarter}
       />
+
+      {showTemplateEditor && (
+        <TemplateEditorDialog
+          open={templateEditorOpen}
+          onOpenChange={setTemplateEditorOpen}
+          onTemplatesUpdated={() => setTemplateCatalogVersion((version) => version + 1)}
+        />
+      )}
 
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
         <div className="container flex h-14 items-center justify-between">
@@ -149,7 +161,14 @@ const Index = () => {
 
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-mono font-semibold uppercase tracking-wider text-muted-foreground">{t.yourBags}</h2>
-          <AddBagDialog />
+          <div className="flex items-center gap-2">
+            {showTemplateEditor && (
+              <Button variant="outline" size="sm" onClick={() => setTemplateEditorOpen(true)}>
+                {t.templateEditorTrigger}
+              </Button>
+            )}
+            <AddBagDialog />
+          </div>
         </div>
 
         {isLoading ? (

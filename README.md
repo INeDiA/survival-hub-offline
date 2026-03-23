@@ -2,6 +2,10 @@
 
 A **PWA offline-first** app for managing emergency bugout bags — track gear, monitor weight, and stay prepared.
 
+## Try the PWA
+
+Access the public app here: [https://bugout-manager.lovable.app](https://bugout-manager.lovable.app)
+
 ![BugOut Manager](public/pwa-512x512.png)
 
 ## Features

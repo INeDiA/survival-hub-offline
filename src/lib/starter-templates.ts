@@ -164,36 +164,38 @@ function normalizeNumber(value: unknown, minimum = 0, fallback = 0) {
 function normalizeTemplates(input: unknown): StarterTemplateDefinition[] {
   if (!Array.isArray(input)) return cloneTemplates(defaultStarterTemplates);
 
-  const normalized = input
-    .map((template, index) => {
-      if (typeof template !== "object" || template === null) return null;
+  const normalized: StarterTemplateDefinition[] = [];
 
-      const source = template as Partial<StarterTemplateDefinition>;
+  input.forEach((template, index) => {
+    if (typeof template !== "object" || template === null) return;
 
-      return {
-        id: normalizeText(source.id) || defaultStarterTemplates[index]?.id || `template-${index + 1}`,
-        icon: normalizeText(source.icon) || "🎒",
-        bagName: normalizeLocalizedText(source.bagName),
-        bagDescription: normalizeLocalizedText(source.bagDescription),
-        summary: normalizeLocalizedText(source.summary),
-        weightLimit: normalizeNumber(source.weightLimit, 0),
-        bagWeight: normalizeNumber(source.bagWeight, 0),
-        items: Array.isArray(source.items)
-          ? source.items.map((item) => {
-              const entry = typeof item === "object" && item !== null ? (item as Partial<StarterTemplateItem>) : {};
-              return {
-                name: normalizeLocalizedText(entry.name),
-                category: normalizeCategory(entry.category),
-                weight: normalizeNumber(entry.weight, 0),
-                quantity: normalizeNumber(entry.quantity, 1, 1),
-                checked: Boolean(entry.checked),
-                notes: normalizeLocalizedText(entry.notes),
-              } satisfies StarterTemplateItem;
-            })
-          : [],
-      } satisfies StarterTemplateDefinition;
-    })
-    .filter((template): template is StarterTemplateDefinition => Boolean(template));
+    const source = template as Partial<StarterTemplateDefinition>;
+    const items: StarterTemplateItem[] = Array.isArray(source.items)
+      ? source.items.map((item) => {
+          const entry = typeof item === "object" && item !== null ? (item as Partial<StarterTemplateItem>) : {};
+
+          return {
+            name: normalizeLocalizedText(entry.name),
+            category: normalizeCategory(entry.category),
+            weight: normalizeNumber(entry.weight, 0),
+            quantity: normalizeNumber(entry.quantity, 1, 1),
+            checked: Boolean(entry.checked),
+            notes: normalizeLocalizedText(entry.notes),
+          };
+        })
+      : [];
+
+    normalized.push({
+      id: normalizeText(source.id) || defaultStarterTemplates[index]?.id || `template-${index + 1}`,
+      icon: normalizeText(source.icon) || "🎒",
+      bagName: normalizeLocalizedText(source.bagName),
+      bagDescription: normalizeLocalizedText(source.bagDescription),
+      summary: normalizeLocalizedText(source.summary),
+      weightLimit: normalizeNumber(source.weightLimit, 0),
+      bagWeight: normalizeNumber(source.bagWeight, 0),
+      items,
+    });
+  });
 
   return normalized.length > 0 ? normalized : cloneTemplates(defaultStarterTemplates);
 }

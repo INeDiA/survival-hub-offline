@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Menu, Download, Upload, Share2, Moon, Sun, Globe, Weight, Smartphone, Clock } from "lucide-react";
+import { Menu, Download, Upload, Share2, Moon, Sun, Globe, Weight, Smartphone, Clock, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -17,11 +17,13 @@ import { useLanguage } from "@/hooks/use-language";
 import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
 import { useExpiryDays } from "@/hooks/use-expiry-days";
+import { WelcomeDialog } from "@/components/WelcomeDialog";
 
 
 export function HamburgerMenu() {
   const [backupOpen, setBackupOpen] = useState(false);
   const [expiryOpen, setExpiryOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const qc = useQueryClient();
   const { theme, toggle } = useTheme();
@@ -107,6 +109,10 @@ export function HamburgerMenu() {
             <Clock className="mr-2 h-4 w-4" />
             {t.expiryWarningLabel}
           </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setAboutOpen(true)}>
+            <Info className="mr-2 h-4 w-4" />
+            {t.aboutLabel}
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setBackupOpen(true)}>
             <Download className="mr-2 h-4 w-4" />
@@ -175,6 +181,8 @@ export function HamburgerMenu() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <WelcomeDialog open={aboutOpen} onContinue={() => setAboutOpen(false)} />
     </>
   );
 }

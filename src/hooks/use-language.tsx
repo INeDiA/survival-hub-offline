@@ -152,6 +152,17 @@ const translations = {
     // Expiry badge
     expired: "Expired",
     
+    // Welcome / About
+    welcomeTitle: "Welcome to BugOut Manager",
+    welcomePrivacyTitle: "100% Private",
+    welcomePrivacyDesc: "Your data stays on your device. Nothing is collected or sent anywhere.",
+    welcomeOfflineTitle: "Works Offline",
+    welcomeOfflineDesc: "Once installed, the app works without an internet connection.",
+    welcomeExportTitle: "Your Data, Your Control",
+    welcomeExportDesc: "Export and import your data anytime as a JSON backup.",
+    welcomeContinue: "Continue",
+    aboutLabel: "About",
+
     // Not found
     pageNotFound: "Oops! Page not found",
     returnHome: "Return to Home",
@@ -289,6 +300,18 @@ const translations = {
     installButton: "Installa",
     iosInstallGuide: "Per installare: tocca il pulsante Condividi, poi \"Aggiungi a schermata Home\".",
     expired: "Scaduto",
+
+    // Welcome / About
+    welcomeTitle: "Benvenuto in BugOut Manager",
+    welcomePrivacyTitle: "100% Privato",
+    welcomePrivacyDesc: "I tuoi dati restano sul tuo dispositivo. Nulla viene raccolto o inviato.",
+    welcomeOfflineTitle: "Funziona Offline",
+    welcomeOfflineDesc: "Una volta installata, l'app funziona senza connessione internet.",
+    welcomeExportTitle: "I Tuoi Dati, Il Tuo Controllo",
+    welcomeExportDesc: "Esporta e importa i tuoi dati in qualsiasi momento come backup JSON.",
+    welcomeContinue: "Continua",
+    aboutLabel: "Info",
+
     pageNotFound: "Oops! Pagina non trovata",
     returnHome: "Torna alla Home",
     cat_clothing: "Abbigliamento",

@@ -3,7 +3,6 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/use-language";
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/hooks/use-language";
 
 interface WelcomeDialogProps {
   open: boolean;

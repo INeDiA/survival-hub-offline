@@ -87,7 +87,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <WelcomeDialog open={welcomeOpen} onContinue={handleWelcomeContinue} />
+      <WelcomeDialog open={welcomeOpen} onContinue={handleWelcomeContinue} dismissible />
 
       <StarterTemplateDialog
         open={starterOpen}

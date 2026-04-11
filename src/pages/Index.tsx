@@ -20,10 +20,13 @@ import { Button } from "@/components/ui/button";
 import { seedBagWithItems } from "@/lib/db";
 import { buildStarterTemplateData, getStarterTemplates, isStarterTemplateEditorAvailable, STARTER_ONBOARDING_KEY } from "@/lib/starter-templates";
 
+const WELCOME_SEEN_KEY = "bugout-welcome-seen";
+
 const Index = () => {
   const { data: bags = [], isLoading } = useBags();
   const { data: allItems = [] } = useAllItems();
   const [expiryOpen, setExpiryOpen] = useState(false);
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
   const [starterOpen, setStarterOpen] = useState(false);
   const [templateEditorOpen, setTemplateEditorOpen] = useState(false);
   const [templateCatalogVersion, setTemplateCatalogVersion] = useState(0);
@@ -60,8 +63,21 @@ const Index = () => {
     if (typeof window === "undefined" || isLoading || bags.length > 0) return;
 
     const onboardingCompleted = window.localStorage.getItem(STARTER_ONBOARDING_KEY) === "1";
-    if (!onboardingCompleted) setStarterOpen(true);
+    if (!onboardingCompleted) {
+      const welcomeSeen = window.localStorage.getItem(WELCOME_SEEN_KEY) === "1";
+      if (!welcomeSeen) {
+        setWelcomeOpen(true);
+      } else {
+        setStarterOpen(true);
+      }
+    }
   }, [bags.length, isLoading]);
+
+  const handleWelcomeContinue = () => {
+    localStorage.setItem(WELCOME_SEEN_KEY, "1");
+    setWelcomeOpen(false);
+    setStarterOpen(true);
+  };
 
   const handleSkipStarter = () => {
     localStorage.setItem(STARTER_ONBOARDING_KEY, "1");
@@ -70,6 +86,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <WelcomeDialog open={welcomeOpen} onContinue={handleWelcomeContinue} />
+
       <StarterTemplateDialog
         open={starterOpen}
         templates={starterTemplates}

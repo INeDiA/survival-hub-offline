@@ -6,6 +6,7 @@ import { BagCard } from "@/components/BagCard";
 import { AddBagDialog } from "@/components/AddBagDialog";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { StarterTemplateDialog } from "@/components/StarterTemplateDialog";
+import { WelcomeDialog } from "@/components/WelcomeDialog";
 import { TemplateEditorDialog } from "@/components/TemplateEditorDialog";
 import { useExpiringItems } from "@/components/ExpiryBadge";
 import { Package, AlertTriangle, ChevronRight, X, Download, Share } from "lucide-react";

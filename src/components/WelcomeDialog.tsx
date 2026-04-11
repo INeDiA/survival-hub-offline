@@ -2,13 +2,15 @@ import { ShieldCheck, WifiOff, Download } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/use-language";
+import { cn } from "@/lib/utils";
 
 interface WelcomeDialogProps {
   open: boolean;
   onContinue: () => void;
+  dismissible?: boolean;
 }
 
-export function WelcomeDialog({ open, onContinue }: WelcomeDialogProps) {
+export function WelcomeDialog({ open, onContinue, dismissible = false }: WelcomeDialogProps) {
   const { t } = useLanguage();
 
   const features = [
@@ -18,11 +20,11 @@ export function WelcomeDialog({ open, onContinue }: WelcomeDialogProps) {
   ];
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={dismissible ? (v) => { if (!v) onContinue(); } : undefined}>
       <DialogContent
-        className="max-w-sm mx-auto p-6 [&>button]:hidden"
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
+        className={cn("max-w-sm mx-auto p-6", !dismissible && "[&>button]:hidden")}
+        onPointerDownOutside={dismissible ? undefined : (e) => e.preventDefault()}
+        onEscapeKeyDown={dismissible ? undefined : (e) => e.preventDefault()}
       >
         <div className="text-center mb-2">
           <h2 className="text-lg font-mono font-bold tracking-tight">{t.welcomeTitle}</h2>

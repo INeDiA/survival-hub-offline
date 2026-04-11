@@ -182,7 +182,7 @@ export function HamburgerMenu() {
         </DialogContent>
       </Dialog>
 
-      <WelcomeDialog open={aboutOpen} onContinue={() => setAboutOpen(false)} />
+      <WelcomeDialog open={aboutOpen} onContinue={() => setAboutOpen(false)} dismissible />
     </>
   );
 }

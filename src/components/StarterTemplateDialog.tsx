@@ -35,7 +35,7 @@ export function StarterTemplateDialog({ open, templates, pending = false, onConf
       }}
     >
       <DialogContent
-        className="sm:max-w-xl"
+        className="sm:max-w-xl max-h-[85dvh] overflow-y-auto"
         onEscapeKeyDown={(event) => event.preventDefault()}
         onPointerDownOutside={(event) => event.preventDefault()}
       >

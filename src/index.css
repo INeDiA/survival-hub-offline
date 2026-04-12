@@ -105,3 +105,9 @@
     @apply bg-background text-foreground font-sans;
   }
 }
+
+/* Hide Ko-fi widget when a Radix dialog is open */
+body:has([data-radix-dialog-overlay]) .floatingchat-container-wrap,
+body:has([data-radix-dialog-overlay]) .floatingchat-container-wrap-mobi {
+  display: none !important;
+}

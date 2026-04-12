@@ -125,7 +125,7 @@ const BagDetail = () => {
         </div>
       </header>
 
-      <main className="container py-6 space-y-6">
+      <main className="container pt-6 pb-24 space-y-6">
         <div className="rounded-lg border bg-card p-4 space-y-3">
           <WeightProgress currentWeight={totalWeight} weightLimit={bag.weightLimit} />
           <div className="flex justify-between text-xs font-mono text-muted-foreground">

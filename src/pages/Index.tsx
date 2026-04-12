@@ -115,7 +115,7 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="container py-6 space-y-6">
+      <main className="container pt-6 pb-24 space-y-6">
         {persistState === "denied" && !persistDismissed && (
           <div className="flex items-start gap-3 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
             <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />

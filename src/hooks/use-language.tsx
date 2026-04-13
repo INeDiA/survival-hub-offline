@@ -162,6 +162,12 @@ const translations = {
     welcomeExportDesc: "Export and import your data anytime as a JSON backup.",
     welcomeContinue: "Continue",
     aboutLabel: "About",
+    settings: "Settings",
+    createFromTemplate: "Create from template",
+    templateAdded: "Bag created from template",
+    themeLabel: "Theme",
+    languageLabel: "Language",
+    weightUnitLabel: "Weight unit",
 
     // Not found
     pageNotFound: "Oops! Page not found",
@@ -311,6 +317,12 @@ const translations = {
     welcomeExportDesc: "Esporta e importa i tuoi dati in qualsiasi momento come backup JSON.",
     welcomeContinue: "Continua",
     aboutLabel: "Info",
+    settings: "Impostazioni",
+    createFromTemplate: "Crea da template",
+    templateAdded: "Zaino creato da template",
+    themeLabel: "Tema",
+    languageLabel: "Lingua",
+    weightUnitLabel: "Unità di peso",
 
     pageNotFound: "Oops! Pagina non trovata",
     returnHome: "Torna alla Home",

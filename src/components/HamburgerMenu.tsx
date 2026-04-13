@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Menu, Download, Upload, Share2, Moon, Sun, Globe, Weight, Smartphone, Clock, Info } from "lucide-react";
+import { Menu, Download, Upload, Share2, Smartphone, Info, Settings, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,28 +12,24 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { exportAllData, downloadJson, importFromJson } from "@/lib/export-import";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useTheme } from "@/hooks/use-theme";
 import { useLanguage } from "@/hooks/use-language";
-import { useWeightUnit } from "@/hooks/use-weight-unit.tsx";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
-import { useExpiryDays } from "@/hooks/use-expiry-days";
 import { WelcomeDialog } from "@/components/WelcomeDialog";
-
+import { StarterTemplateDialog } from "@/components/StarterTemplateDialog";
+import { getStarterTemplates, buildStarterTemplateData } from "@/lib/starter-templates";
+import { seedBagWithItems } from "@/lib/db";
+import { useNavigate } from "react-router-dom";
 
 export function HamburgerMenu() {
   const [backupOpen, setBackupOpen] = useState(false);
-  const [expiryOpen, setExpiryOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [templateOpen, setTemplateOpen] = useState(false);
+  const [templatePending, setTemplatePending] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const qc = useQueryClient();
-  const { theme, toggle } = useTheme();
-  const { lang, t, setLang } = useLanguage();
-  const { unit, setUnit } = useWeightUnit();
+  const { lang, t } = useLanguage();
   const pwa = usePwaInstall();
-  const { expiryWarningDays, setExpiryWarningDays } = useExpiryDays();
-
-  const nextUnit = unit === "kg" ? "lbs" : "kg";
-  const expiryOptions = [14, 30, 60, 90];
+  const navigate = useNavigate();
 
   const handleExport = async () => {
     try {
@@ -59,7 +55,6 @@ export function HamburgerMenu() {
           return;
         } catch (shareErr: any) {
           if (shareErr?.name === "AbortError") return;
-          // share failed (e.g. desktop), fall through to download
         }
       }
       toast.info(t.shareNotSupported);
@@ -84,6 +79,21 @@ export function HamburgerMenu() {
     if (fileRef.current) fileRef.current.value = "";
   };
 
+  const handleTemplateConfirm = async (templateId: string) => {
+    setTemplatePending(true);
+    try {
+      const { bag, items } = buildStarterTemplateData(templateId, lang);
+      await seedBagWithItems(bag, items);
+      qc.invalidateQueries();
+      toast.success(t.templateAdded);
+      setTemplateOpen(false);
+    } catch {
+      toast.error(t.backupError);
+    } finally {
+      setTemplatePending(false);
+    }
+  };
+
   return (
     <>
       <DropdownMenu>
@@ -93,27 +103,10 @@ export function HamburgerMenu() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={toggle}>
-            {theme === "dark" ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
-            {theme === "dark" ? t.lightTheme : t.darkTheme}
+          <DropdownMenuItem onClick={() => setTemplateOpen(true)}>
+            <Package className="mr-2 h-4 w-4" />
+            {t.createFromTemplate}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setLang(lang === "en" ? "it" : "en")}>
-            <Globe className="mr-2 h-4 w-4" />
-            {lang === "en" ? "Italiano" : "English"}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setUnit(nextUnit)}>
-            <Weight className="mr-2 h-4 w-4" />
-            {nextUnit === "kg" ? "Kg" : t.lbsLabel}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setExpiryOpen(true)}>
-            <Clock className="mr-2 h-4 w-4" />
-            {t.expiryWarningLabel}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setAboutOpen(true)}>
-            <Info className="mr-2 h-4 w-4" />
-            {t.aboutLabel}
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setBackupOpen(true)}>
             <Download className="mr-2 h-4 w-4" />
             {t.backupRestore}
@@ -130,9 +123,19 @@ export function HamburgerMenu() {
               {t.iosInstallGuide}
             </DropdownMenuItem>
           )}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => navigate("/settings")}>
+            <Settings className="mr-2 h-4 w-4" />
+            {t.settings}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setAboutOpen(true)}>
+            <Info className="mr-2 h-4 w-4" />
+            {t.aboutLabel}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {/* Backup dialog */}
       <Dialog open={backupOpen} onOpenChange={setBackupOpen}>
         <DialogContent>
           <DialogHeader>
@@ -151,37 +154,21 @@ export function HamburgerMenu() {
               </Button>
               <input ref={fileRef} type="file" accept=".json" className="hidden" onChange={handleImport} />
             </div>
-            <p className="text-xs text-muted-foreground">
-              {t.importWarning}
-            </p>
+            <p className="text-xs text-muted-foreground">{t.importWarning}</p>
           </div>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={expiryOpen} onOpenChange={setExpiryOpen}>
-        <DialogContent className="max-w-xs">
-          <DialogHeader>
-            <DialogTitle>{t.expiryWarningLabel}</DialogTitle>
-          </DialogHeader>
-          <div className="grid grid-cols-2 gap-2">
-            {expiryOptions.map((d) => (
-              <Button
-                key={d}
-                variant={expiryWarningDays === d ? "default" : "outline"}
-                size="sm"
-                className="text-sm"
-                onClick={() => {
-                  setExpiryWarningDays(d);
-                  setExpiryOpen(false);
-                }}
-              >
-                {t.expiryWarningDaysLabel(d)}
-              </Button>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Template dialog */}
+      <StarterTemplateDialog
+        open={templateOpen}
+        templates={getStarterTemplates(lang)}
+        pending={templatePending}
+        onConfirm={handleTemplateConfirm}
+        onSkip={() => setTemplateOpen(false)}
+      />
 
+      {/* About dialog */}
       <WelcomeDialog open={aboutOpen} onContinue={() => setAboutOpen(false)} dismissible />
     </>
   );

@@ -8,6 +8,7 @@ import { WeightUnitProvider } from "@/hooks/use-weight-unit.tsx";
 import { ExpiryDaysProvider } from "@/hooks/use-expiry-days.tsx";
 import Index from "./pages/Index.tsx";
 import BagDetail from "./pages/BagDetail.tsx";
+import Settings from "./pages/Settings.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/bag/:id" element={<BagDetail />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
